@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RPI // FULL STACK REFERENCE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e12;
+  --bg2:#0d1319;
+  --surface:#111820;
+  --surface2:#151d26;
+  --border:#1f2a33;
+  --border2:#2a3841;
+  --text:#dfe6ea;
+  --text2:#8b9aa5;
+  --text3:#5c6b75;
+  --teal:#5dcaa5;
+  --teal-dim:#1d9e75;
+  --amber:#f2a923;
+  --amber-dim:#ba7517;
+  --coral:#e0714a;
+  --coral-dim:#d85a30;
+  --red:#e5605f;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  line-height:1.65;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size:48px 48px;
+  background-attachment:fixed;
+  background-color:var(--bg);
+}
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background:radial-gradient(ellipse at top, rgba(93,202,165,0.06), transparent 60%);
+  pointer-events:none; z-index:0;
+}
+code, .mono{font-family:'JetBrains Mono',monospace;}
+.wrap{max-width:1100px; margin:0 auto; padding:0 28px 120px; position:relative; z-index:1;}
+
+/* ---- HERO ---- */
+.hero{
+  padding:70px 0 44px;
+  border-bottom:1px solid var(--border2);
+  margin-bottom:8px;
+}
+.hero .eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px; letter-spacing:0.25em; color:var(--teal);
+  text-transform:uppercase; margin-bottom:18px;
+  display:flex; align-items:center; gap:10px;
+}
+.hero .eyebrow::before{content:"●"; font-size:8px;}
+.hero h1{
+  font-family:'JetBrains Mono',monospace;
+  font-weight:800;
+  font-size:clamp(34px,5vw,58px);
+  line-height:1.05;
+  letter-spacing:-0.01em;
+  color:var(--text);
+  margin-bottom:20px;
+}
+.hero h1 span{color:var(--teal);}
+.hero p.sub{color:var(--text2); font-size:16px; max-width:640px;}
+.hero .meta{
+  display:flex; gap:28px; margin-top:32px; flex-wrap:wrap;
+  font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text3);
+}
+.hero .meta b{color:var(--amber); font-weight:500;}
+
+/* ---- TOC ---- */
+.toc{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:1px; background:var(--border);
+  border:1px solid var(--border); margin:36px 0 60px;
+}
+.toc a{
+  background:var(--surface); padding:16px 18px; text-decoration:none;
+  display:flex; align-items:baseline; gap:10px; color:var(--text2);
+  transition:background .15s, color .15s;
+}
+.toc a:hover{background:var(--surface2); color:var(--text);}
+.toc a .n{font-family:'JetBrains Mono',monospace; color:var(--teal); font-size:12px; font-weight:700;}
+.toc a .t{font-size:13px;}
+
+/* ---- SECTIONS ---- */
+section{margin:0 0 8px; padding:56px 0; border-bottom:1px solid var(--border);}
+section:last-of-type{border-bottom:none;}
+.sec-head{
+  display:flex; align-items:center; gap:16px; margin-bottom:8px;
+}
+.sec-tag{
+  font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700;
+  color:var(--bg); background:var(--teal); padding:4px 10px; letter-spacing:0.08em;
+  flex-shrink:0;
+}
+.sec-tag.amber{background:var(--amber);}
+.sec-tag.coral{background:var(--coral);}
+.sec-head h2{
+  font-family:'JetBrains Mono',monospace; font-weight:700; font-size:24px; color:var(--text);
+}
+.sec-sub{color:var(--text2); font-size:14px; margin:14px 0 30px; max-width:720px;}
+
+h3{
+  font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700;
+  color:var(--teal); margin:34px 0 12px; letter-spacing:0.02em;
+  display:flex; align-items:center; gap:8px;
+}
+h3::before{content:"//"; color:var(--text3);}
+h3.amber{color:var(--amber);}
+h3.coral{color:var(--coral);}
+p{color:var(--text2); font-size:14.5px; margin-bottom:12px; max-width:760px;}
+p strong{color:var(--text); font-weight:600;}
+ul,ol{color:var(--text2); font-size:14.5px; margin:0 0 16px 22px; max-width:740px;}
+li{margin-bottom:6px;}
+li strong{color:var(--text); font-weight:600;}
+li code{color:var(--amber);}
+
+/* ---- CODE BLOCKS ---- */
+pre{
+  background:var(--bg2); border:1px solid var(--border2); border-left:3px solid var(--teal);
+  padding:16px 18px; overflow-x:auto; margin:14px 0 20px; font-size:13px;
+}
+pre code{color:#c7e8da; font-family:'JetBrains Mono',monospace; line-height:1.6;}
+p code, li code{
+  background:var(--surface2); border:1px solid var(--border2); padding:1px 6px;
+  border-radius:3px; font-size:0.88em;
+}
+
+/* ---- CARD GRIDS ---- */
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0 24px;}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:16px 0 24px;}
+@media(max-width:800px){.grid2,.grid3{grid-template-columns:1fr;}}
+.card{
+  background:var(--surface); border:1px solid var(--border2); padding:18px 20px;
+}
+.card .k{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--amber); margin-bottom:6px; letter-spacing:0.04em;}
+.card p{font-size:13.5px; margin:0;}
+
+/* ---- TABLE ---- */
+table{width:100%; border-collapse:collapse; margin:16px 0 26px; font-size:13.5px;}
+th{
+  font-family:'JetBrains Mono',monospace; text-align:left; color:var(--teal);
+  border-bottom:1px solid var(--border2); padding:8px 12px; font-size:11.5px;
+  letter-spacing:0.05em; text-transform:uppercase;
+}
+td{padding:8px 12px; border-bottom:1px solid var(--border); color:var(--text2);}
+td:first-child, td code{color:var(--text);}
+tr:hover td{background:var(--surface);}
+
+/* ---- GPIO DIAGRAM ---- */
+.gpio-wrap{
+  background:var(--surface); border:1px solid var(--border2); padding:24px;
+  margin:20px 0 30px; overflow-x:auto;
+}
+.gpio-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:2px 24px; max-width:520px; margin:0 auto; font-family:'JetBrains Mono',monospace; font-size:11.5px;}
+.pin-row{display:contents;}
+.pin{
+  display:flex; align-items:center; gap:8px; padding:5px 0;
+}
+.pin.r{flex-direction:row-reverse; text-align:right;}
+.pin .dot{width:9px; height:9px; border-radius:50%; flex-shrink:0; border:1px solid var(--border2);}
+.pin .num{color:var(--text3); width:20px; flex-shrink:0;}
+.pin.r .num{text-align:right;}
+.pin .label{color:var(--text2);}
+.pin.power .dot{background:var(--red);} .pin.power .label{color:var(--red);}
+.pin.ground .dot{background:var(--text3);}
+.pin.gpio .dot{background:var(--teal);} .pin.gpio .label{color:var(--text);}
+.pin.i2c .dot{background:var(--amber);} .pin.i2c .label{color:var(--amber);}
+.pin.spi .dot{background:var(--coral);} .pin.spi .label{color:var(--coral);}
+.pin.uart .dot{background:#8b7fd8;} .pin.uart .label{color:#a89be8;}
+.legend{display:flex; gap:20px; flex-wrap:wrap; margin-top:20px; padding-top:16px; border-top:1px solid var(--border); font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--text2);}
+.legend span{display:flex; align-items:center; gap:6px;}
+.legend .dot{width:9px; height:9px; border-radius:50%;}
+
+/* ---- WARNING / NOTE BOXES ---- */
+.box{padding:16px 18px; border-left:3px solid; margin:16px 0 24px; background:var(--surface);}
+.box.warn{border-color:var(--red);}
+.box.warn .lbl{color:var(--red);}
+.box.tip{border-color:var(--teal);}
+.box.tip .lbl{color:var(--teal);}
+.box .lbl{font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:0.08em; margin-bottom:6px; font-weight:700;}
+.box p{margin:0; font-size:13.5px;}
+
+/* ---- STEPS ---- */
+.steps{list-style:none; margin:16px 0 26px; padding:0; max-width:760px;}
+.steps li{
+  display:grid; grid-template-columns:34px 1fr; gap:16px; margin-bottom:16px; color:var(--text2); font-size:14px;
+}
+.steps li .idx{
+  font-family:'JetBrains Mono',monospace; color:var(--teal); border:1px solid var(--border2);
+  width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700;
+}
+.steps li b{color:var(--text); display:block; margin-bottom:2px;}
+
+/* ---- CIRCUIT VIZ (section 13) ---- */
+.circuit-stage{
+  background:radial-gradient(ellipse at 50% 45%, #0f1a1c 0%, var(--bg2) 65%);
+  border:1px solid var(--border2); padding:20px; margin:20px 0 30px; position:relative;
+}
+.circuit-stage svg{display:block; width:100%; height:auto;}
+@keyframes corepulse{
+  0%,100%{opacity:0.55; r:26;} 50%{opacity:1; r:30;}
+}
+@keyframes coreglow{
+  0%,100%{opacity:0.15;} 50%{opacity:0.4;}
+}
+@keyframes flow{ to{ stroke-dashoffset:-40; } }
+@keyframes flicker2{0%,100%{opacity:1;}50%{opacity:.7;}}
+.c-ring{animation:corepulse 2.6s ease-in-out infinite;}
+.c-halo{animation:coreglow 2.6s ease-in-out infinite;}
+.c-trace{stroke-dasharray:6 6; animation:flow 1.4s linear infinite;}
+.c-node text{font-family:'JetBrains Mono',monospace;}
+.legend2{display:flex; gap:22px; flex-wrap:wrap; margin-top:16px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text3);}
+.legend2 span{display:flex; align-items:center; gap:6px;}
+.legend2 i{width:10px; height:2px; display:inline-block;}
+
+/* ---- LOGIC GATE / ARCH DIAGRAMS ---- */
+.arch-box{background:var(--surface); border:1px solid var(--border2); padding:20px; margin:18px 0 26px; overflow-x:auto;}
+
+/* ---- FOOTER ---- */
+footer{
+  padding:40px 0; text-align:center; color:var(--text3); font-family:'JetBrains Mono',monospace; font-size:12px;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">reference // hardware-to-code</div>
+    <h1>RASPBERRY PI<br><span>ZERO TO RUNNING</span></h1>
+    <p class="sub">Everything between opening the antistatic bag and writing code that reads a sensor and draws to a screen. Built as a standing reference — pin it, come back to any section on its own.</p>
+    <div class="meta">
+      <span><b>SCOPE</b> handling → assembly → OS → GPIO → display → software</span>
+      <span><b>MODEL</b> applies to all Pi boards, notes where 2B differs</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <a href="#s1"><span class="n">01</span><span class="t">Handling & safety</span></a>
+    <a href="#s2"><span class="n">02</span><span class="t">Board anatomy</span></a>
+    <a href="#s3"><span class="n">03</span><span class="t">Assembly order</span></a>
+    <a href="#s4"><span class="n">04</span><span class="t">Imaging the OS</span></a>
+    <a href="#s5"><span class="n">05</span><span class="t">First boot & config</span></a>
+    <a href="#s6"><span class="n">06</span><span class="t">GPIO full pinout</span></a>
+    <a href="#s7"><span class="n">07</span><span class="t">Connecting a screen</span></a>
+    <a href="#s8"><span class="n">08</span><span class="t">Programming the GPIO</span></a>
+    <a href="#s9"><span class="n">09</span><span class="t">Protocols: I2C / SPI / UART / PWM</span></a>
+    <a href="#s10"><span class="n">10</span><span class="t">Software stack & services</span></a>
+    <a href="#s11"><span class="n">11</span><span class="t">Troubleshooting</span></a>
+    <a href="#s12"><span class="n">12</span><span class="t">Your setup: 2B + uni network</span></a>
+    <a href="#s13"><span class="n">13</span><span class="t">The core — how a chip actually computes</span></a>
+    <a href="#s14"><span class="n">14</span><span class="t">Computer engineering foundations</span></a>
+    <a href="#s15"><span class="n">15</span><span class="t">Materials — why this, not that</span></a>
+    <a href="#s16"><span class="n">16</span><span class="t">Numbers & data — what a bit actually is</span></a>
+    <a href="#s17"><span class="n">17</span><span class="t">Operating systems — Linux under the hood</span></a>
+    <a href="#s18"><span class="n">18</span><span class="t">Networking — how SSH actually works</span></a>
+    <a href="#s19"><span class="n">19</span><span class="t">Languages — what "running code" means</span></a>
+    <a href="#s20"><span class="n">20</span><span class="t">The full stack, tied together</span></a>
+    <a href="#s21"><span class="n">21</span><span class="t">Windows, macOS, Linux — the whole landscape</span></a>
+    <a href="#s22"><span class="n">22</span><span class="t">Shells — Bash vs PowerShell vs cmd</span></a>
+    <a href="#s23"><span class="n">23</span><span class="t">CPU architectures — x86, ARM, 32 vs 64-bit</span></a>
+    <a href="#s24"><span class="n">24</span><span class="t">The engineer's canon — what's actually non-negotiable</span></a>
+    <a href="#s25"><span class="n">25</span><span class="t">ARM assembly — the layer beneath your Python</span></a>
+  </div>
+
+  <!-- ============ 01 HANDLING ============ -->
+  <section id="s1">
+    <div class="sec-head"><div class="sec-tag">01</div><h2>Handling & safety</h2></div>
+    <p class="sec-sub">The board is more robust than it looks, but a handful of habits prevent the failures that actually happen — static discharge, shorts, and the SD card issue you already ran into.</p>
+
+    <h3>Static electricity (ESD)</h3>
+    <p>Your body holds a static charge you can't feel — often thousands of volts — and the chips on the board can be damaged by a fraction of that. It doesn't spark or hurt; the chip just quietly dies or starts glitching.</p>
+    <ul>
+      <li>Touch a grounded metal object (a radiator, an unpainted PC case) before picking the board up.</li>
+      <li>Hold the board by its edges — avoid touching the chips, the GPIO pins, or the underside components.</li>
+      <li>Work on a hard, non-carpeted surface if possible. Carpet + dry air is the worst combination for static buildup.</li>
+    </ul>
+
+    <h3>Shorts</h3>
+    <div class="box warn"><div class="lbl">avoid</div><p>Never set a powered board down on a metal surface, a conductive antistatic bag's metallic side, or anything with loose wires nearby. A single stray strand of wire bridging two pins can short a rail and kill the board or your power supply instantly.</p></div>
+
+    <h3>The SD card issue (your specific case)</h3>
+    <p>Covered in depth already — the takeaway for this poster: the microSD slot on a 2B is a plain friction connector with no lock. Treat the card as sealed inside the case once it's imaged and working. Any physical build (like your cyberdeck) should route the slot so nothing external can press on it — see Section 03.</p>
+
+    <h3>Power discipline</h3>
+    <ul>
+      <li><strong>Always power up last.</strong> Connect SD card, GPIO wiring, HDMI, keyboard, everything else first — power cable goes in last.</li>
+      <li><strong>Never hot-plug GPIO wiring.</strong> Connecting/disconnecting sensors or wires to GPIO pins while the board is powered can short pins together mid-insertion. Power down first.</li>
+      <li><strong>Don't just pull the power cable to turn it off</strong> — this is the same risk as the SD card issue but for the whole filesystem. Use <code>sudo shutdown -h now</code> and wait for the green activity LED to stop blinking before cutting power.</li>
+    </ul>
+  </section>
+
+  <!-- ============ 02 ANATOMY ============ -->
+  <section id="s2">
+    <div class="sec-head"><div class="sec-tag">02</div><h2>Board anatomy</h2></div>
+    <p class="sec-sub">The five zones from the diagram above, expanded with what each part actually is and why it's shaped the way it is.</p>
+
+    <div class="grid2">
+      <div class="card"><div class="k">SoC — system on chip</div><p>One chip containing the CPU (does the computing), GPU (handles graphics/video), and memory controller. Everything "the Pi does" happens inside this one piece of silicon.</p></div>
+      <div class="card"><div class="k">RAM</div><p>Working memory. Stacked on top of the SoC on most models (package-on-package) — invisible as a separate chip. Wiped completely on power loss; this is where your running programs and OS state live while active.</p></div>
+      <div class="card"><div class="k">microSD slot</div><p>The only persistent storage and, on older Pis, the only place the boot ROM knows to look. Holds the bootloader, OS, and your files.</p></div>
+      <div class="card"><div class="k">USB ports</div><p>For keyboard, mouse, storage, and other peripherals. Also used to power the board via a USB power supply (separate from data USB ports on some models).</p></div>
+      <div class="card"><div class="k">Ethernet port</div><p>Wired networking — more reliable and lower-latency than Wi-Fi, useful when headless (no monitor) and doing remote work over SSH.</p></div>
+      <div class="card"><div class="k">HDMI out</div><p>Digital video + audio to a monitor or TV. Some smaller Pi models use mini/micro-HDMI — check your board before buying a cable.</p></div>
+      <div class="card"><div class="k">Audio jack</div><p>Analog audio out on boards that have one (not all do — some rely on HDMI audio or USB audio only).</p></div>
+      <div class="card"><div class="k">GPIO header</div><p>40 pins of raw electrical access to the SoC. Digital in/out, plus dedicated pins for power, ground, and communication protocols. Covered fully in Section 06.</p></div>
+    </div>
+
+    <h3>The boot chain, concretely</h3>
+    <ol>
+      <li><strong>Power applied</strong> — the SoC's boot ROM (etched at the factory, unchangeable) wakes up.</li>
+      <li><strong>ROM looks for a bootloader</strong> — on the SD card (older Pis), or SD/USB/network depending on model and configured boot order (newer Pis).</li>
+      <li><strong>Bootloader loads the kernel</strong> — a small program (<code>bootcode.bin</code> / <code>start.elf</code> on older Pis, or firmware built into newer ones) reads config files and hands off to the Linux kernel.</li>
+      <li><strong>Kernel initializes hardware</strong> — sets up RAM, drivers, filesystems.</li>
+      <li><strong>init/systemd starts userspace</strong> — the actual OS you interact with: services, networking, and eventually your login prompt or desktop.</li>
+    </ol>
+  </section>
+
+  <!-- ============ 03 ASSEMBLY ============ -->
+  <section id="s3">
+    <div class="sec-head"><div class="sec-tag amber">03</div><h2>Assembly order</h2></div>
+    <p class="sec-sub">A sane build order for a project like your cyberdeck — minimizes rework and avoids powering the board before it's safe to.</p>
+
+    <ol class="steps">
+      <li><span class="idx">1</span><div><b>Image the SD card first, on your laptop</b><br>Do this before any physical assembly — see Section 04. Test that it boots on the bare board (just power + HDMI + keyboard) before it goes inside an enclosure.</div></li>
+      <li><span class="idx">2</span><div><b>Mount the board to standoffs or a plate</b><br>Use brass standoffs/screws through the board's corner mounting holes — never let the board rest directly on a conductive surface.</div></li>
+      <li><span class="idx">3</span><div><b>Route and secure the SD card</b><br>If using a right-angle extender or recessed mount, install and test this <em>before</em> closing the case — SD failures are much easier to diagnose with the board accessible.</div></li>
+      <li><span class="idx">4</span><div><b>Wire GPIO peripherals with the board unpowered</b><br>Screen, buttons, sensors — everything connects while power is disconnected. Double check polarity on anything with a + / − before first power-up.</div></li>
+      <li><span class="idx">5</span><div><b>Close the enclosure, leaving ports accessible</b><br>Leave USB, power, and any debug headers reachable without disassembly — you'll want them during software setup.</div></li>
+      <li><span class="idx">6</span><div><b>First power-up, watch the LEDs</b><br>Red = power good. Green blinking = SD card activity (a good sign — it's reading the boot files). No green activity at all usually means an imaging or SD contact problem.</div></li>
+    </ol>
+
+    <div class="box tip"><div class="lbl">for your build specifically</div><p>Since you're on a Pi 2B with a friction SD slot: image and fully verify the card works before it goes anywhere near the final enclosure, and clone a backup image immediately once it's working (Section 04 covers this). That turns "case pressed on the card, corrupted everything" from a full rebuild into a five-minute reflash.</p></div>
+  </section>
+
+  <!-- ============ 04 IMAGING ============ -->
+  <section id="s4">
+    <div class="sec-head"><div class="sec-tag">04</div><h2>Imaging the OS</h2></div>
+    <p class="sec-sub">Getting an operating system onto the SD card, and setting it up so it can boot without a monitor attached (headless).</p>
+
+    <h3>Tool: Raspberry Pi Imager</h3>
+    <p>The official tool (<code>raspberrypi.com/software</code>). Handles downloading the OS image, writing it to the card, and pre-configuring Wi-Fi/SSH/username before the card ever touches the Pi.</p>
+    <ol class="steps">
+      <li><span class="idx">1</span><div><b>Choose OS</b><br>Raspberry Pi OS Lite (no desktop — smaller, faster boot, ideal for headless/embedded projects like a cyberdeck) or Raspberry Pi OS with Desktop if you want a GUI.</div></li>
+      <li><span class="idx">2</span><div><b>Choose storage</b><br>Select your SD card. Double-check you've picked the right device — this step erases everything on the target.</div></li>
+      <li><span class="idx">3</span><div><b>Edit settings (gear icon) before writing</b><br>Set hostname, enable SSH, set a username/password, and pre-fill Wi-Fi SSID/password. This is what makes headless setup possible — no monitor needed at all on first boot.</div></li>
+      <li><span class="idx">4</span><div><b>Write, then verify</b><br>Imager writes and verifies automatically. Don't remove the card until it says done.</div></li>
+    </ol>
+
+    <h3>Backing up a working card (do this after every milestone)</h3>
+    <pre><code># macOS / Linux — find the disk first with `diskutil list` or `lsblk`
+sudo dd if=/dev/diskN of=~/pi-backup.img bs=4M status=progress
+
+# Restore later:
+sudo dd if=~/pi-backup.img of=/dev/diskN bs=4M status=progress</code></pre>
+    <p>On Windows, Raspberry Pi Imager can write a custom <code>.img</code> file back to a card, or use Win32DiskImager to both read and write images.</p>
+
+    <h3>Headless first connection</h3>
+    <p>With SSH enabled and Wi-Fi pre-configured in Imager, boot the Pi with no monitor attached and connect from your laptop:</p>
+    <pre><code>ssh username@hostname.local
+# e.g. ssh sabrine@raspberrypi.local</code></pre>
+    <div class="box tip"><div class="lbl">tip</div><p>If <code>.local</code> hostname resolution doesn't work on your network, find the Pi's IP from your router's device list, or run a network scan (<code>arp -a</code>, or an app like Fing) and SSH to the IP directly.</p></div>
+  </section>
+
+  <!-- ============ 05 FIRST BOOT ============ -->
+  <section id="s5">
+    <div class="sec-head"><div class="sec-tag">05</div><h2>First boot & config</h2></div>
+    <p class="sec-sub">The handful of settings worth checking the moment you get a shell prompt.</p>
+
+    <pre><code>sudo raspi-config</code></pre>
+    <p>Opens a text-based settings menu. The parts worth knowing:</p>
+    <table>
+      <tr><th>Menu</th><th>What it's for</th></tr>
+      <tr><td>System Options</td><td>Hostname, boot behaviour (CLI vs desktop, auto-login), password</td></tr>
+      <tr><td>Interface Options</td><td>Enable/disable SSH, I2C, SPI, UART, camera, VNC — <strong>this is where you turn on the protocols in Section 09</strong></td></tr>
+      <tr><td>Localisation Options</td><td>Timezone, keyboard layout, locale — set this early, wrong timezone breaks log timestamps and scheduled tasks</td></tr>
+      <tr><td>Advanced Options</td><td>Expand filesystem (fills the whole SD card's capacity — do this first if it didn't happen automatically), GPU memory split</td></tr>
+    </table>
+
+    <h3>Update the system</h3>
+    <pre><code>sudo apt update
+sudo apt full-upgrade -y
+sudo reboot</code></pre>
+
+    <h3>Set a static IP (optional, useful for headless projects)</h3>
+    <p>Makes the Pi reachable at the same address every time instead of relying on DHCP + hostname resolution. Edit <code>/etc/dhcpcd.conf</code> (or use NetworkManager's <code>nmcli</code> on newer OS releases) to pin an address on your subnet.</p>
+  </section>
+
+  <!-- ============ 06 GPIO PINOUT ============ -->
+  <section id="s6">
+    <div class="sec-head"><div class="sec-tag coral">06</div><h2>GPIO full pinout</h2></div>
+    <p class="sec-sub">All 40 pins, physical position matches the actual header (pin 1 top-left near the SD card, when the board is oriented with ports facing you).</p>
+
+    <div class="gpio-wrap">
+      <div class="gpio-grid">
+        <div class="pin power"><span class="num">1</span><span class="dot"></span><span class="label">3V3 power</span></div>
+        <div class="pin power r"><span class="num">2</span><span class="dot"></span><span class="label">5V power</span></div>
+
+        <div class="pin i2c"><span class="num">3</span><span class="dot"></span><span class="label">GPIO2 · SDA (I2C)</span></div>
+        <div class="pin power r"><span class="num">4</span><span class="dot"></span><span class="label">5V power</span></div>
+
+        <div class="pin i2c"><span class="num">5</span><span class="dot"></span><span class="label">GPIO3 · SCL (I2C)</span></div>
+        <div class="pin ground r"><span class="num">6</span><span class="dot"></span><span class="label">Ground</span></div>
+
+        <div class="pin gpio"><span class="num">7</span><span class="dot"></span><span class="label">GPIO4</span></div>
+        <div class="pin uart r"><span class="num">8</span><span class="dot"></span><span class="label">GPIO14 · TXD (UART)</span></div>
+
+        <div class="pin ground"><span class="num">9</span><span class="dot"></span><span class="label">Ground</span></div>
+        <div class="pin uart r"><span class="num">10</span><span class="dot"></span><span class="label">GPIO15 · RXD (UART)</span></div>
+
+        <div class="pin gpio"><span class="num">11</span><span class="dot"></span><span class="label">GPIO17</span></div>
+        <div class="pin gpio r"><span class="num">12</span><span class="dot"></span><span class="label">GPIO18 · PWM</span></div>
+
+        <div class="pin gpio"><span class="num">13</span><span class="dot"></span><span class="label">GPIO27</span></div>
+        <div class="pin ground r"><span class="num">14</span><span class="dot"></span><span class="label">Ground</span></div>
+
+        <div class="pin gpio"><span class="num">15</span><span class="dot"></span><span class="label">GPIO22</span></div>
+        <div class="pin gpio r"><span class="num">16</span><span class="dot"></span><span class="label">GPIO23</span></div>
+
+        <div class="pin power"><span class="num">17</span><span class="dot"></span><span class="label">3V3 power</span></div>
+        <div class="pin gpio r"><span class="num">18</span><span class="dot"></span><span class="label">GPIO24</span></div>
+
+        <div class="pin spi"><span class="num">19</span><span class="dot"></span><span class="label">GPIO10 · MOSI (SPI)</span></div>
+        <div class="pin ground r"><span class="num">20</span><span class="dot"></span><span class="label">Ground</span></div>
+
+        <div class="pin spi"><span class="num">21</span><span class="dot"></span><span class="label">GPIO9 · MISO (SPI)</span></div>
+        <div class="pin gpio r"><span class="num">22</span><span class="dot"></span><span class="label">GPIO25</span></div>
+
+        <div class="pin spi"><span class="num">23</span><span class="dot"></span><span class="label">GPIO11 · SCLK (SPI)</span></div>
+        <div class="pin spi r"><span class="num">24</span><span class="dot"></span><span class="label">GPIO8 · CE0 (SPI)</span></div>
+
+        <div class="pin ground"><span class="num">25</span><span class="dot"></span><span class="label">Ground</span></div>
+        <div class="pin spi r"><span class="num">26</span><span class="dot"></span><span class="label">GPIO7 · CE1 (SPI)</span></div>
+
+        <div class="pin i2c"><span class="num">27</span><span class="dot"></span><span class="label">ID_SD (EEPROM)</span></div>
+        <div class="pin i2c r"><span class="num">28</span><span class="dot"></span><span class="label">ID_SC (EEPROM)</span></div>
+
+        <div class="pin gpio"><span class="num">29</span><span class="dot"></span><span class="label">GPIO5</span></div>
+        <div class="pin ground r"><span class="num">30</span><span class="dot"></span><span class="label">Ground</span></div>
+
+        <div class="pin gpio"><span class="num">31</span><span class="dot"></span><span class="label">GPIO6</span></div>
+        <div class="pin gpio r"><span class="num">32</span><span class="dot"></span><span class="label">GPIO12 · PWM</span></div>
+
+        <div class="pin gpio"><span class="num">33</span><span class="dot"></span><span class="label">GPIO13 · PWM</span></div>
+        <div class="pin ground r"><span class="num">34</span><span class="dot"></span><span class="label">Ground</span></div>
+
+        <div class="pin gpio"><span class="num">35</span><span class="dot"></span><span class="label">GPIO19 · PWM</span></div>
+        <div class="pin gpio r"><span class="num">36</span><span class="dot"></span><span class="label">GPIO16</span></div>
+
+        <div class="pin gpio"><span class="num">37</span><span class="dot"></span><span class="label">GPIO26</span></div>
+        <div class="pin gpio r"><span class="num">38</span><span class="dot"></span><span class="label">GPIO20</span></div>
+
+        <div class="pin ground"><span class="num">39</span><span class="dot"></span><span class="label">Ground</span></div>
+        <div class="pin gpio r"><span class="num">40</span><span class="dot"></span><span class="label">GPIO21</span></div>
+      </div>
+      <div class="legend">
+        <span><span class="dot" style="background:var(--red)"></span> Power</span>
+        <span><span class="dot" style="background:var(--text3)"></span> Ground</span>
+        <span><span class="dot" style="background:var(--teal)"></span> General GPIO</span>
+        <span><span class="dot" style="background:var(--amber)"></span> I2C</span>
+        <span><span class="dot" style="background:var(--coral)"></span> SPI</span>
+        <span><span class="dot" style="background:#a89be8"></span> UART</span>
+      </div>
+    </div>
+
+    <div class="box warn"><div class="lbl">important</div><p>GPIO pins are 3.3V logic, <strong>not</strong> 5V-tolerant. Feeding a GPIO pin 5V (common with some sensors and Arduino-world parts) can permanently damage that pin or the SoC. Always check a sensor's logic voltage before wiring it directly — use a level shifter or voltage divider if it's a 5V device.</p></div>
+
+    <h3>Physical vs BCM vs WiringPi numbering</h3>
+    <p>This trips up almost everyone at first: there are three different numbering schemes in circulation, and code libraries default to different ones.</p>
+    <table>
+      <tr><th>Scheme</th><th>What it counts</th><th>Used by</th></tr>
+      <tr><td>Physical / BOARD</td><td>Literal pin position 1–40 on the header</td><td>What you count with your finger on the header</td></tr>
+      <tr><td>BCM / GPIO</td><td>The SoC's internal GPIO number (e.g. "GPIO17")</td><td>Most Python libraries default here — what's labeled in the pinout above</td></tr>
+      <tr><td>WiringPi</td><td>A legacy third numbering, mostly historical now</td><td>Older C examples — largely deprecated, avoid for new projects</td></tr>
+    </table>
+    <p>When you see "GPIO17" in a tutorial, that's the BCM number — cross-reference against the diagram above to find its physical pin (11) if you're wiring by hand.</p>
+  </section>
+
+  <!-- ============ 07 SCREEN ============ -->
+  <section id="s7">
+    <div class="sec-head"><div class="sec-tag amber">07</div><h2>Connecting a screen</h2></div>
+    <p class="sec-sub">Three genuinely different paths depending on what kind of display you're using — they are not interchangeable in how you configure them.</p>
+
+    <div class="grid3">
+      <div class="card"><div class="k">HDMI monitor</div><p>Plug and play. The Pi outputs a full framebuffer over HDMI automatically — no config needed for a standard monitor or TV.</p></div>
+      <div class="card"><div class="k">SPI display (small GPIO screens)</div><p>Small (often 1.5–3.5") screens wired directly to GPIO pins using the SPI protocol. Needs a driver enabled and, usually, a specific overlay for that exact display model.</p></div>
+      <div class="card"><div class="k">DSI display (official touchscreen)</div><p>Connects via the dedicated DSI ribbon cable port, not GPIO. Usually detected automatically by recent Raspberry Pi OS versions.</p></div>
+    </div>
+
+    <h3 class="amber">Setting up a small SPI/GPIO screen</h3>
+    <p>This is the path most cyberdeck-style builds use, so it's worth doing in detail. The general flow:</p>
+    <ol class="steps">
+      <li><span class="idx">1</span><div><b>Wire the screen to the correct pins</b><br>Typically: VCC → 3.3V, GND → Ground, plus SPI pins (MOSI, SCLK, CE0) and a couple of GPIO control lines (DC/data-command, RST/reset, sometimes backlight). The exact pins depend on your specific screen model — check its datasheet.</div></li>
+      <li><span class="idx">2</span><div><b>Enable SPI</b><br><code>sudo raspi-config</code> → Interface Options → SPI → enable, then reboot.</div></li>
+      <li><span class="idx">3</span><div><b>Install the driver</b><br>Most small SPI screens use a common controller chip (ILI9341, ST7789, etc). Install the matching driver — often via a manufacturer's install script, or a Python library like <code>luma.lcd</code> or Adafruit's CircuitPython display drivers.</div></li>
+      <li><span class="idx">4</span><div><b>Choose console framebuffer vs your own drawing</b><br>You can mirror the whole Linux console/desktop onto the small screen (a framebuffer driver), or — more common for custom projects — leave the console on HDMI and draw directly to the SPI screen from your own Python script using a graphics library.</div></li>
+    </ol>
+
+    <h3 class="amber">Drawing to the screen from Python</h3>
+    <pre><code>from luma.core.interface.serial import spi
+from luma.lcd.device import st7789
+from PIL import ImageDraw
+
+serial = spi(port=0, device=0, gpio_DC=24, gpio_RST=25)
+device = st7789(serial, width=240, height=240)
+
+with device:
+    pass  # context manager clears the screen
+
+draw_img = device.display  # or build a PIL Image and call device.display(image)</code></pre>
+    <p>Libraries like <code>luma.lcd</code> and Adafruit's CircuitPython display drivers both hand you a PIL (Python Imaging Library) canvas — meaning once the screen is talking, you draw to it with normal image/text drawing calls, same as you would to any image file.</p>
+  </section>
+
+  <!-- ============ 08 PROGRAMMING GPIO ============ -->
+  <section id="s8">
+    <div class="sec-head"><div class="sec-tag">08</div><h2>Programming the GPIO</h2></div>
+    <p class="sec-sub">Every practical way people actually write code to control pins, roughly ordered from easiest to most advanced.</p>
+
+    <h3>Python — gpiozero (recommended starting point)</h3>
+    <p>A high-level library built specifically to make common components (LEDs, buttons, motors, sensors) trivial to use, hiding the raw pin-toggling.</p>
+    <pre><code>from gpiozero import LED, Button
+from time import sleep
+
+led = LED(17)      # BCM numbering
+button = Button(2)
+
+button.when_pressed = led.on
+button.when_released = led.off
+
+while True:
+    sleep(1)</code></pre>
+
+    <h3>Python — RPi.GPIO (lower level, still very common)</h3>
+    <p>Older, more explicit library. You manage pin modes and states yourself — closer to what's actually happening electrically.</p>
+    <pre><code>import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(17, GPIO.OUT)
+
+try:
+    while True:
+        GPIO.output(17, GPIO.HIGH)
+        time.sleep(1)
+        GPIO.output(17, GPIO.LOW)
+        time.sleep(1)
+finally:
+    GPIO.cleanup()   # always release pins on exit</code></pre>
+
+    <h3>C — pigpio / WiringPi-successor libraries</h3>
+    <p>For timing-critical work (precise PWM, fast polling) Python's overhead can matter. <code>pigpio</code> runs a background daemon and gives C, Python, and even network-socket access to precise pin timing.</p>
+    <pre><code>#include &lt;pigpio.h&gt;
+
+int main() {
+    gpioInitialise();
+    gpioSetMode(17, PI_OUTPUT);
+    gpioWrite(17, 1);
+    gpioTerminate();
+    return 0;
+}
+// compile: gcc file.c -lpigpio -lrt -pthread -o out</code></pre>
+
+    <h3>Shell — for quick tests, no code needed</h3>
+    <pre><code># Using the modern gpio character device interface:
+gpioset gpiochip0 17=1     # set GPIO17 high
+gpioget gpiochip0 17       # read GPIO17's state</code></pre>
+
+    <h3>Node.js — onoff</h3>
+    <pre><code>const Gpio = require('onoff').Gpio;
+const led = new Gpio(17, 'out');
+
+led.writeSync(1);
+setTimeout(() => { led.writeSync(0); led.unexport(); }, 1000);</code></pre>
+
+    <h3>Which one to actually reach for</h3>
+    <table>
+      <tr><th>Situation</th><th>Use</th></tr>
+      <tr><td>Learning, quick prototypes, most hobby projects</td><td><code>gpiozero</code></td></tr>
+      <tr><td>Need explicit low-level control, older tutorials</td><td><code>RPi.GPIO</code></td></tr>
+      <tr><td>Precise timing (audio, fast PWM, stepper motors)</td><td><code>pigpio</code></td></tr>
+      <tr><td>Integrating with a Node.js app/server</td><td><code>onoff</code> or <code>pigpio</code>'s Node bindings</td></tr>
+      <tr><td>One-off manual test from the terminal</td><td><code>gpioset</code> / <code>gpioget</code></td></tr>
+    </table>
+
+    <div class="box tip"><div class="lbl">always</div><p>Release pins cleanly on exit (<code>GPIO.cleanup()</code>, <code>led.unexport()</code>, etc). Skipping this leaves pins in whatever state they were left, which can confuse the next run of your script or another program trying to use the same pin.</p></div>
+  </section>
+
+  <!-- ============ 09 PROTOCOLS ============ -->
+  <section id="s9">
+    <div class="sec-head"><div class="sec-tag coral">09</div><h2>Protocols: I2C · SPI · UART · PWM</h2></div>
+    <p class="sec-sub">Plain digital GPIO can only be on or off. These four are the standard ways the Pi talks to more complex components — each solves a different communication problem.</p>
+
+    <div class="grid2">
+      <div class="card"><div class="k">I2C — two wire, many devices</div><p>Two shared wires (SDA/data, SCL/clock) let you connect many devices to the same two pins, each addressed by a unique ID. Common for sensors (temperature, IMUs), small OLED screens, real-time clocks. Slower but very wire-efficient.</p></div>
+      <div class="card"><div class="k">SPI — fast, one device per chip-select</div><p>Four+ wires (MOSI, MISO, SCLK, CE/chip-select), much faster than I2C. Each device needs its own chip-select line. Used for displays, SD card readers, and anything needing higher data throughput.</p></div>
+      <div class="card"><div class="k">UART — simple serial, point to point</div><p>Two wires (TX/RX), the oldest and simplest serial protocol. Used for direct communication with a single other device — GPS modules, some sensors, or debugging another microcontroller.</p></div>
+      <div class="card"><div class="k">PWM — simulating analog output</div><p>Rapidly switches a pin on/off to approximate a variable voltage. Used for LED brightness, motor speed, and servo control — the Pi has no true analog output, so PWM is the standard workaround.</p></div>
+    </div>
+
+    <h3 class="coral">Enabling each protocol</h3>
+    <pre><code>sudo raspi-config
+# → Interface Options → I2C / SPI / Serial Port(UART) → enable each you need
+# reboot after enabling</code></pre>
+
+    <h3 class="coral">I2C — scanning for connected devices</h3>
+    <pre><code>sudo apt install i2c-tools
+i2cdetect -y 1
+# prints a grid of addresses — a number shown means a device answered there</code></pre>
+
+    <h3 class="coral">I2C in Python</h3>
+    <pre><code>from smbus2 import SMBus
+
+bus = SMBus(1)
+data = bus.read_byte_data(0x68, 0x00)  # device address, register</code></pre>
+
+    <h3 class="coral">PWM in Python (gpiozero)</h3>
+    <pre><code>from gpiozero import PWMLED
+from time import sleep
+
+led = PWMLED(18)
+for cycle in range(3):
+    led.value = 0.1   # 10% duty cycle — dim
+    sleep(1)
+    led.value = 1.0   # 100% — full brightness
+    sleep(1)</code></pre>
+
+    <h3 class="coral">Choosing which protocol a component needs</h3>
+    <p>You don't choose this — the component's datasheet does. Check what the part actually exposes: if it lists "SDA/SCL" it's I2C, "MOSI/MISO/SCK/CS" it's SPI, "TX/RX" it's UART. Match your wiring and code library to what's printed on the datasheet, not the other way around.</p>
+  </section>
+
+  <!-- ============ 10 SOFTWARE STACK ============ -->
+  <section id="s10">
+    <div class="sec-head"><div class="sec-tag">10</div><h2>Software stack & services</h2></div>
+    <p class="sec-sub">Once code runs once, the next question is making it run reliably — on boot, in the background, without a terminal attached.</p>
+
+    <h3>Running your script automatically on boot — systemd (recommended)</h3>
+    <pre><code>sudo nano /etc/systemd/system/mydeck.service</code></pre>
+    <pre><code>[Unit]
+Description=My cyberdeck app
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/sabrine/deck/main.py
+WorkingDirectory=/home/sabrine/deck
+Restart=on-failure
+User=sabrine
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+    <pre><code>sudo systemctl enable mydeck.service
+sudo systemctl start mydeck.service
+sudo systemctl status mydeck.service   # check it's running
+journalctl -u mydeck.service -f        # live log output</code></pre>
+    <p>This is the production-grade way to do it — the service restarts automatically if your script crashes, starts on every boot, and its logs are centrally viewable.</p>
+
+    <h3>Quick alternative — cron</h3>
+    <pre><code>crontab -e
+# add: @reboot python3 /home/sabrine/deck/main.py &</code></pre>
+    <p>Simpler but cruder — no automatic restart on crash, harder to monitor. Fine for quick tests, not for anything you're relying on.</p>
+
+    <h3>Choosing an OS image</h3>
+    <table>
+      <tr><th>Image</th><th>Best for</th></tr>
+      <tr><td>Raspberry Pi OS Lite</td><td>Headless/embedded projects, cyberdecks, anything without a desktop GUI need — fastest boot, smallest footprint</td></tr>
+      <tr><td>Raspberry Pi OS (Desktop)</td><td>General use, learning, when you want a full GUI environment</td></tr>
+      <tr><td>Ubuntu Server / Desktop for Pi</td><td>If you want the broader Ubuntu package ecosystem or are more familiar with apt-based Ubuntu tooling specifically</td></tr>
+      <tr><td>DietPi</td><td>Extremely minimal, highly optimized for low-resource boards like the 2B</td></tr>
+    </table>
+
+    <h3>Remote access options</h3>
+    <table>
+      <tr><th>Method</th><th>Use case</th></tr>
+      <tr><td>SSH</td><td>Terminal access — the default for headless work, what you'll use most</td></tr>
+      <tr><td>VNC</td><td>Full remote desktop GUI, if you're running Desktop OS and want visual access</td></tr>
+      <tr><td>Samba / SFTP</td><td>Transferring files back and forth between laptop and Pi</td></tr>
+      <tr><td>Syncthing / rsync</td><td>Keeping a project folder in sync between laptop and Pi during development</td></tr>
+    </table>
+  </section>
+
+  <!-- ============ 11 TROUBLESHOOTING ============ -->
+  <section id="s11">
+    <div class="sec-head"><div class="sec-tag amber">11</div><h2>Troubleshooting</h2></div>
+    <p class="sec-sub">The failure modes you'll actually hit, roughly in order of how often they come up.</p>
+
+    <table>
+      <tr><th>Symptom</th><th>Likely cause</th><th>Check</th></tr>
+      <tr><td>No lights at all on power-up</td><td>Power supply or cable fault</td><td>Try a different cable/supply — needs to supply enough current, not just the right voltage</td></tr>
+      <tr><td>Red light on, no green activity</td><td>SD card not being read</td><td>Reseat the card, reflash it, try a different card/reader</td></tr>
+      <tr><td>Boots but no HDMI output</td><td>HDMI negotiation or cable issue</td><td>Connect the monitor before powering on the Pi, try a different HDMI port/cable</td></tr>
+      <tr><td>SSH connection refused</td><td>SSH not enabled, or Pi not on network</td><td>Re-flash with SSH enabled in Imager, or check the SD card's boot partition for an <code>ssh</code> file (empty file, enables SSH)</td></tr>
+      <tr><td>GPIO script errors with "pin already in use"</td><td>Previous script didn't clean up pins</td><td>Add proper <code>GPIO.cleanup()</code>/<code>unexport()</code> calls, or reboot to reset all pin states</td></tr>
+      <tr><td>I2C device not showing in <code>i2cdetect</code></td><td>Wiring, address conflict, or I2C not enabled</td><td>Double-check SDA/SCL aren't swapped, confirm I2C is enabled in raspi-config</td></tr>
+      <tr><td>Random freezes / reboots under load</td><td>Insufficient power supply (very common)</td><td>Use the official or a rated power supply — underpowered GPIO peripherals are the most common instability cause</td></tr>
+      <tr><td>Filesystem read-only after crash</td><td>SD card corruption from an unclean shutdown/removal</td><td>Reflash from your backup image (Section 04) — this is exactly the failure you're already guarding against</td></tr>
+    </table>
+
+    <div class="box tip"><div class="lbl">general debugging habit</div><p><code>dmesg</code> and <code>journalctl -xe</code> show the kernel and system logs — almost every hardware-level problem (bad SD card, power brownouts, USB device issues) leaves a trace there even when nothing appears on screen.</p></div>
+  </section>
+
+  <!-- ============ 12 YOUR SETUP ============ -->
+  <section id="s12">
+    <div class="sec-head"><div class="sec-tag coral">12</div><h2>Your setup: Pi 2B + university network</h2></div>
+    <p class="sec-sub">Specifics for exactly your hardware and situation — 2 Model B, HDMI screen available, laptop as your programming terminal, on a university network.</p>
+
+    <div class="box warn"><div class="lbl">critical hardware fact</div><p>The <strong>Pi 2 Model B has no onboard Wi-Fi or Bluetooth</strong> — that only arrived with the 3B and Zero W onward. Your two options for getting it online are a wired <strong>Ethernet cable</strong>, or a <strong>USB Wi-Fi dongle</strong> plugged into one of its USB ports. This changes your whole setup plan, so it's worth deciding this first.</p></div>
+
+    <h3 class="coral">Ethernet vs USB Wi-Fi dongle — pick one</h3>
+    <div class="grid2">
+      <div class="card"><div class="k">Ethernet (recommended for you)</div><p>Just works — no driver hunting, no authentication headaches, most reliable on a campus network. If you have an Ethernet port within cable reach (halls, library, lab), use this. Also the fastest and lowest-latency option for SSH work.</p></div>
+      <div class="card"><div class="k">USB Wi-Fi dongle</div><p>More flexible location-wise, but adds a dependency: cheap dongles sometimes need extra drivers on Linux. Look specifically for one using the <code>RTL8188</code> or <code>RTL8192</code> chipset — both have solid built-in Raspberry Pi OS support with zero extra driver install.</p></div>
+    </div>
+
+    <h3 class="coral">Why university Wi-Fi is a different beast than home Wi-Fi</h3>
+    <p>Home Wi-Fi is almost always WPA2-Personal — one shared password, and any device (including a headless Pi) connects instantly. University networks (often branded "eduroam") are usually <strong>WPA2/WPA3-Enterprise</strong> — instead of a shared password, every device authenticates individually with your university username and password through a protocol called <strong>802.1X</strong>. This is why you can't just type the Wi-Fi password into Raspberry Pi Imager the way you would at home — the imager's simple Wi-Fi field is built for Personal networks, not Enterprise ones.</p>
+
+    <h3 class="coral">Connecting a headless Pi to eduroam-style networks</h3>
+    <p>You configure it by hand, before first boot, by editing a file directly on the SD card's boot partition — or once booted, via the terminal. The core piece is a <code>wpa_supplicant</code> network block:</p>
+    <pre><code>network={
+    ssid="eduroam"
+    key_mgmt=WPA-EAP
+    eap=PEAP
+    identity="your_uni_username@university.ac.uk"
+    password="your_uni_password"
+    phase2="auth=MSCHAPV2"
+}</code></pre>
+    <p>The exact <code>eap</code>/<code>phase2</code> values depend on your specific university's configuration — check your IT department's eduroam setup page (search "[your university] eduroam Linux config") for the precise values, since some use PEAP+MSCHAPV2, others TTLS, and some require a downloaded root certificate.</p>
+
+    <div class="box tip"><div class="lbl">the practical path for you</div><p>Since you already have an HDMI screen and keyboard: do first-time setup <strong>connected to the screen</strong>, not headless. Boot with monitor + keyboard attached, log in locally, and run the network setup (either plug Ethernet, or configure Wi-Fi through the desktop's network manager GUI or <code>nmtui</code> in the terminal — much easier than hand-editing config files blind). Once it's online and you've confirmed SSH works, disconnect the screen entirely and do all further work from your laptop over SSH. Screen only comes back out if something breaks.</p></div>
+
+    <h3 class="coral">A gotcha specific to campus networks: client isolation</h3>
+    <p>Some university networks deliberately block devices on the same Wi-Fi from talking to each other directly (called AP/client isolation) — for security, to stop one student's malware reaching another's laptop. If your laptop can't SSH into the Pi even though both show as connected, this is the likely cause. <strong>Ethernet between them, or both on the same wired switch/socket, sidesteps this entirely</strong> — another reason Ethernet is the safer bet for your situation.</p>
+
+    <h3 class="coral">Your actual dev loop, put together</h3>
+    <ol class="steps">
+      <li><span class="idx">1</span><div><b>Flash the SD card on your laptop</b><br>Raspberry Pi OS Lite (Linux) via Raspberry Pi Imager, SSH enabled in the settings gear.</div></li>
+      <li><span class="idx">2</span><div><b>First boot with HDMI screen + keyboard attached</b><br>Get networking sorted here — Ethernet if possible, or Wi-Fi via <code>nmtui</code>/desktop GUI if using the dongle.</div></li>
+      <li><span class="idx">3</span><div><b>Find its IP address</b><br><code>ip addr show</code> on the Pi itself, or check your router/campus network's connected-devices list.</div></li>
+      <li><span class="idx">4</span><div><b>SSH in from your laptop</b><br><code>ssh username@&lt;ip-address&gt;</code> — from here on, the screen can come off and the Pi lives inside its case.</div></li>
+      <li><span class="idx">5</span><div><b>Write and edit code on your laptop</b><br>Either edit directly over SSH (<code>nano</code>/<code>vim</code> on the Pi), or edit locally and sync files over with <code>scp</code>/<code>rsync</code>, or use VS Code's "Remote - SSH" extension to edit Pi files with a full local-feeling editor.</div></li>
+    </ol>
+  </section>
+
+  <!-- ============ 13 THE CORE VISUAL ============ -->
+  <section id="s13">
+    <div class="sec-head"><div class="sec-tag">13</div><h2>The core — how a chip actually computes</h2></div>
+    <p class="sec-sub">Every board you've been looking at is really just this, scaled up: a switch, wired to millions of copies of itself, arranged so that patterns of on/off represent both data and instructions. Here's what's actually happening under that SoC when current flows.</p>
+
+    <div class="circuit-stage">
+      <svg viewBox="0 0 680 380" width="100%" role="img" aria-label="Animated diagram of current flowing from a core processor to memory, storage, and I/O">
+        <defs>
+          <radialGradient id="haloGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#5dcaa5" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#5dcaa5" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- halo -->
+        <circle class="c-halo" cx="340" cy="190" r="90" fill="url(#haloGrad)"/>
+        <!-- traces to 4 nodes -->
+        <path class="c-trace" d="M340 165 L340 70" stroke="#5dcaa5" stroke-width="1.5" fill="none"/>
+        <path class="c-trace" d="M365 190 L560 190" stroke="#f2a923" stroke-width="1.5" fill="none"/>
+        <path class="c-trace" d="M340 215 L340 310" stroke="#e0714a" stroke-width="1.5" fill="none"/>
+        <path class="c-trace" d="M315 190 L120 190" stroke="#a89be8" stroke-width="1.5" fill="none"/>
+        <!-- core -->
+        <circle class="c-ring" cx="340" cy="190" r="28" fill="none" stroke="#5dcaa5" stroke-width="2"/>
+        <circle cx="340" cy="190" r="16" fill="#0d1319" stroke="#5dcaa5" stroke-width="1"/>
+        <text x="340" y="194" text-anchor="middle" fill="#5dcaa5" font-size="9" font-family="JetBrains Mono, monospace">CORE</text>
+
+        <!-- node: registers/cache top -->
+        <g class="c-node">
+          <rect x="290" y="30" width="100" height="40" rx="6" fill="#111820" stroke="#5dcaa5" stroke-width="0.75"/>
+          <text x="340" y="46" text-anchor="middle" fill="#dfe6ea" font-size="11">Registers</text>
+          <text x="340" y="60" text-anchor="middle" fill="#8b9aa5" font-size="9">nanosecond access</text>
+        </g>
+        <!-- node: RAM right -->
+        <g class="c-node">
+          <rect x="562" y="165" width="100" height="50" rx="6" fill="#111820" stroke="#f2a923" stroke-width="0.75"/>
+          <text x="612" y="184" text-anchor="middle" fill="#dfe6ea" font-size="11">RAM</text>
+          <text x="612" y="198" text-anchor="middle" fill="#8b9aa5" font-size="9">working memory</text>
+        </g>
+        <!-- node: storage bottom -->
+        <g class="c-node">
+          <rect x="290" y="312" width="100" height="46" rx="6" fill="#111820" stroke="#e0714a" stroke-width="0.75"/>
+          <text x="340" y="330" text-anchor="middle" fill="#dfe6ea" font-size="11">Storage</text>
+          <text x="340" y="344" text-anchor="middle" fill="#8b9aa5" font-size="9">microSD, persistent</text>
+        </g>
+        <!-- node: I/O left -->
+        <g class="c-node">
+          <rect x="18" y="165" width="100" height="50" rx="6" fill="#111820" stroke="#a89be8" stroke-width="0.75"/>
+          <text x="68" y="184" text-anchor="middle" fill="#dfe6ea" font-size="11">I/O bus</text>
+          <text x="68" y="198" text-anchor="middle" fill="#8b9aa5" font-size="9">GPIO, USB, HDMI</text>
+        </g>
+      </svg>
+      <div class="legend2">
+        <span><i style="background:#5dcaa5"></i> to registers — sub-nanosecond, holds the current instruction</span>
+        <span><i style="background:#f2a923"></i> to RAM — nanoseconds, holds active programs</span>
+        <span><i style="background:#e0714a"></i> to storage — milliseconds, holds everything else</span>
+        <span><i style="background:#a89be8"></i> to I/O — variable, the outside world</span>
+      </div>
+    </div>
+
+    <h3>What that pulsing core is actually doing</h3>
+    <p>Every single thing a CPU does breaks down into one repeating loop, running billions of times a second: <strong>fetch → decode → execute</strong>.</p>
+    <ol class="steps">
+      <li><span class="idx">1</span><div><b>Fetch</b><br>The core reads the next instruction from memory — a plain number, stored at a specific address, that encodes what to do next.</div></li>
+      <li><span class="idx">2</span><div><b>Decode</b><br>Internal circuitry interprets that number: "this is an add", "this is a jump", "this is a memory read" — and figures out which parts of the chip need to switch on to carry it out.</div></li>
+      <li><span class="idx">3</span><div><b>Execute</b><br>The relevant circuitry actually does it — adds two numbers, moves data, changes what happens next — and the result lands somewhere (a register, memory, or an output pin), then the loop repeats.</div></li>
+    </ol>
+    <p>The "glow" in the diagram above is a real physical thing, not just an animation choice: it's literally current moving through billions of transistors, each one flicking on and off in that fetch-decode-execute rhythm, at a rate set by the chip's clock — on a Pi 2B, 900 million times a second.</p>
+  </section>
+
+  <!-- ============ 14 COMPUTER ENGINEERING FOUNDATIONS ============ -->
+  <section id="s14">
+    <div class="sec-head"><div class="sec-tag amber">14</div><h2>Computer engineering foundations</h2></div>
+    <p class="sec-sub">The layer beneath everything else in this poster — how "electricity" becomes "computation" in the first place.</p>
+
+    <h3 class="amber">Binary — why two states, not ten</h3>
+    <p>A computer represents every number, letter, image, and instruction as sequences of two states: on and off (written as 1 and 0). Not because computers are bad at counting to ten — but because <strong>distinguishing two clearly separated voltage levels is far more reliable</strong> than distinguishing ten. Electrical noise, tiny voltage fluctuations, and manufacturing variance make a system with only two possible states vastly more robust than one trying to reliably tell apart ten different voltage levels billions of times a second.</p>
+
+    <h3 class="amber">The transistor — the one component everything is built from</h3>
+    <p>A transistor is, at its simplest, a switch — but instead of a mechanical lever, it's switched by voltage. Apply voltage to one part (the gate), and it allows current to flow between two other parts (source and drain). No voltage, no flow. That's the entire primitive: <strong>a switch controlled by electricity instead of a finger.</strong></p>
+    <p>The Pi 2B's SoC contains roughly <strong>900 million transistors</strong> packed into a chip smaller than your fingernail, each one flicking on and off billions of times per second. Every capability of the board — every calculation, every pixel, every network packet — ultimately reduces to patterns of these switches flipping.</p>
+
+    <h3 class="amber">Logic gates — combining switches into decisions</h3>
+    <p>Wire a handful of transistors together in specific patterns and you get logic gates — tiny circuits that implement basic decisions:</p>
+    <div class="arch-box">
+      <table>
+        <tr><th>Gate</th><th>Behaviour</th><th>Real-world analogy</th></tr>
+        <tr><td>AND</td><td>Output on only if both inputs are on</td><td>A door that needs two keys turned simultaneously</td></tr>
+        <tr><td>OR</td><td>Output on if either input is on</td><td>A light switched by two separate switches, either one works</td></tr>
+        <tr><td>NOT</td><td>Output is the opposite of the input</td><td>A "normally closed" relay — off input means on output</td></tr>
+        <tr><td>NAND</td><td>AND followed by NOT — off only if both inputs are on</td><td>The universal building block — every other gate can be built from NAND gates alone</td></tr>
+      </table>
+    </div>
+    <p>Chain enough of these together and you can build an <strong>adder</strong> (does arithmetic), then chain adders and memory elements together and you get an <strong>ALU</strong> (arithmetic logic unit — the part of the CPU that actually computes), and an ALU plus control circuitry plus memory access becomes a full CPU core.</p>
+
+    <h3 class="amber">Memory hierarchy — why there isn't just one kind of memory</h3>
+    <p>You've already met three tiers of this on your own board. The pattern behind it: <strong>faster memory is dramatically more expensive per byte</strong>, so real systems use a pyramid — a small amount of very fast memory, backed by more of something slower, backed by a lot of something slower still.</p>
+    <table>
+      <tr><th>Tier</th><th>Speed</th><th>Size</th><th>Persists on power loss?</th></tr>
+      <tr><td>Registers</td><td>Sub-nanosecond</td><td>A few dozen values</td><td>No</td></tr>
+      <tr><td>Cache (L1/L2)</td><td>~1 nanosecond</td><td>Kilobytes to a few megabytes</td><td>No</td></tr>
+      <tr><td>RAM</td><td>Tens of nanoseconds</td><td>Gigabytes (512MB–1GB on a 2B)</td><td>No</td></tr>
+      <tr><td>microSD / storage</td><td>Milliseconds</td><td>Gigabytes+</td><td>Yes</td></tr>
+    </table>
+
+    <h3 class="amber">Buses and the clock — how parts stay in sync</h3>
+    <p>A <strong>bus</strong> is a shared set of wires that different components use to pass data — the address bus says "where", the data bus says "what". A <strong>clock</strong> is a signal that ticks at a fixed rate (the SoC's GHz rating), and every component agrees to only change state on a tick — this is what keeps millions of independent switching circuits synchronized instead of racing each other into garbage results. It's the same reason a rowing crew has a coxswain calling the stroke rate — individually-timed effort is chaos; a shared beat makes coordinated work possible.</p>
+
+    <h3 class="amber">Von Neumann architecture — the shape almost every computer follows</h3>
+    <p>Named after mathematician John von Neumann, this is the architectural pattern your Pi (and your laptop, and almost everything with "computer" in the name) uses: <strong>a single memory space holds both the program's instructions and its data</strong>, and the CPU fetches from that same memory to figure out both what to do and what to do it to. The alternative (Harvard architecture — separate memory for instructions vs data) shows up mostly in small embedded microcontrollers where speed and simplicity matter more than flexibility.</p>
+  </section>
+
+  <!-- ============ 15 MATERIALS ============ -->
+  <section id="s15">
+    <div class="sec-head"><div class="sec-tag coral">15</div><h2>Materials — why this, not that</h2></div>
+    <p class="sec-sub">Every material choice on the board and in a build like yours was an engineering trade-off, not a default. Here's the actual reasoning behind each one.</p>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="k">Silicon — the chip itself</div>
+        <p>Silicon is a semiconductor: pure, it barely conducts — but adding tiny, precise impurities (called <strong>doping</strong>, using elements like phosphorus or boron) creates regions that conduct in controllable, switchable ways. That controllability is the entire basis of the transistor. Silicon wins over alternatives (germanium was an early rival) because it's <strong>abundant</strong> (literally sand), and — crucially — it naturally forms a stable, insulating oxide layer (silicon dioxide, essentially glass) when exposed to oxygen, which is exactly what's needed to precisely insulate microscopic regions of a chip during manufacturing.</p>
+      </div>
+      <div class="card">
+        <div class="k">Copper — the traces</div>
+        <p>Copper isn't the best conductor (silver is slightly better), but it's roughly <strong>100x cheaper</strong> and doesn't oxidize into a resistive layer nearly as much as most alternatives, while still conducting extremely well. For a board with a thousand traces, that combination of "excellent enough" conductivity and low cost at scale beats "slightly better" every time. Gold and silver get reserved for tiny, high-value spots — see below.</p>
+      </div>
+      <div class="card">
+        <div class="k">FR4 fiberglass — the board substrate</div>
+        <p>The rigid material under the copper (and under that green solder mask) is FR4: woven fiberglass cloth bonded with epoxy resin. It's chosen for a specific combination: <strong>electrically insulating</strong> (so copper traces don't short to each other through the board), <strong>mechanically rigid</strong> (doesn't flex and crack traces), <strong>flame-retardant</strong> (the "FR" — won't sustain a fire if something shorts and overheats), and cheap to mass-produce. Flexible PCBs exist (using polyimide instead) for applications needing bendable circuits, but they cost significantly more.</p>
+      </div>
+      <div class="card">
+        <div class="k">Gold plating — connector contacts</div>
+        <p>Look closely at USB port contacts, SD card edge connectors, or the "notches" some boards use for identification — a thin gold plating. Gold is a worse conductor than copper, and vastly more expensive — but it's used only in microscopically thin layers, and only where it matters: gold essentially <strong>doesn't corrode or oxidize</strong>. A connection you plug and unplug repeatedly needs a contact surface that stays clean and low-resistance for years; copper alone would gradually oxidize at that exposed contact point and start causing intermittent connection failures.</p>
+      </div>
+      <div class="card">
+        <div class="k">Solder — joining components to the board</div>
+        <p>Modern solder is almost universally <strong>lead-free</strong> now (tin-silver-copper alloys, common shorthand "SAC"), a shift driven by RoHS regulations banning lead in consumer electronics due to its toxicity. The trade-off: lead-free solder has a higher melting point and is slightly less forgiving to work with by hand than old tin-lead solder — which is why hobbyist soldering irons need to run hotter than they did a generation ago, and why lead-free joints can look slightly duller/grainier than the shiny tin-lead joints in old electronics.</p>
+      </div>
+      <div class="card">
+        <div class="k">Aluminum vs copper — heatsinks</div>
+        <p>Copper conducts heat better than aluminum, but aluminum is roughly a third of the weight and a fraction of the cost. For a small board like a Pi, the SoC doesn't generate enough heat to need copper's extra performance — so cheap, light aluminum heatsinks are the standard choice. High-end applications (GPUs, server CPUs) that generate far more heat often do pay copper's premium, sometimes as a copper baseplate under an aluminum fin stack — the best of both, where it's worth the cost.</p>
+      </div>
+      <div class="card">
+        <div class="k">ABS vs polycarbonate vs PLA — enclosures</div>
+        <p><strong>ABS</strong> is the classic injection-molded case plastic: tough, impact-resistant, handles moderate heat well — most commercial Pi cases are ABS or a similar engineering plastic. <strong>Polycarbonate</strong> is stronger and more heat-tolerant still (and often clear), at higher cost — used where you want to see inside or need extra durability. <strong>PLA</strong>, the plastic most home 3D printers use by default, is biodegradable, easy and cheap to print, but softens at a relatively low temperature (~60°C) — fine for a decorative or lightly-used case, risky for anything that sits near a heatsink or in direct sun. If you 3D print your cyberdeck's enclosure, this is exactly why people upgrade to <strong>PETG</strong> (tougher, more heat-resistant than PLA, still easy to print) for anything electronics-adjacent.</p>
+      </div>
+      <div class="card">
+        <div class="k">Ceramic and plastic IC packages</div>
+        <p>The material encasing a chip (its "package") is chosen for how it manages heat and protects the silicon inside. Cheap consumer chips use plastic packages (cost-optimized, adequate for low heat). Higher-performance or extreme-environment chips use ceramic packages, which handle heat and mechanical stress better but cost significantly more to produce — another case of "good enough and cheap" winning for mass consumer hardware, with the premium material reserved for where it earns its cost.</p>
+      </div>
+      <div class="card">
+        <div class="k">Solder mask green — the one non-functional choice</div>
+        <p>Worth restating since it surprises people: the green color itself carries no electrical or functional benefit. It's a historical/economic default — green solder mask pigment was cheap and well-understood early in PCB manufacturing, and the industry standardized around it. Every other color (red, blue, black, purple) performs identically; it's purely aesthetic once you're past "does the mask insulate and resist solder properly," which they all do.</p>
+      </div>
+    </div>
+
+    <div class="box tip"><div class="lbl">the pattern underneath all of these</div><p>Almost every material choice on this board follows the same logic: <strong>use the cheapest material that clears the bar for a given job, and reserve expensive, high-performance materials only for the specific spots where their extra property (corrosion resistance, thermal conductivity, heat tolerance) is actually load-bearing.</strong> Recognizing that pattern is most of what "engineering intuition" for material selection actually is.</p></div>
+  </section>
+
+  <!-- ============ 16 NUMBERS & DATA ============ -->
+  <section id="s16">
+    <div class="sec-head"><div class="sec-tag">16</div><h2>Numbers & data — what a bit actually is</h2></div>
+    <p class="sec-sub">Section 14 covered binary as electrical states. This is the next layer up: how those on/off states become numbers, letters, colors, and sound.</p>
+
+    <h3>Binary, decimal, hex — same number, three costumes</h3>
+    <p>A single binary digit (bit) is 1 or 0. Group 8 of them and you get a <strong>byte</strong> — 256 possible patterns (0 to 255). <strong>Hexadecimal</strong> (base 16, digits 0-9 then A-F) exists purely for human convenience: one hex digit represents exactly 4 bits, so a byte is always exactly 2 hex digits. That's why you see hex everywhere in computing — memory addresses, color codes, MAC addresses — it's a compact, exact shorthand for binary that decimal can't offer (a byte in decimal is an awkward 0-255, not a clean digit count).</p>
+    <table>
+      <tr><th>Binary</th><th>Decimal</th><th>Hex</th></tr>
+      <tr><td>0000 1010</td><td>10</td><td>0A</td></tr>
+      <tr><td>1111 1111</td><td>255</td><td>FF</td></tr>
+      <tr><td>0001 0111</td><td>23</td><td>17</td></tr>
+    </table>
+    <p>That teal color you've been looking at all through this poster, <code>#5DCAA5</code> — that's literally three bytes in hex: <code>5D</code> red, <code>CA</code> green, <code>A5</code> blue, each 0-255, mixed together as light.</p>
+
+    <h3>Text — ASCII and Unicode</h3>
+    <p>A letter is just a number with an agreed-upon meaning. <strong>ASCII</strong>, the original standard, maps numbers 0-127 to English letters, digits, and punctuation — 'A' is 65, 'a' is 97. This is why so much old computing was English-centric: 127 values simply couldn't fit every alphabet on Earth. <strong>Unicode</strong> replaced this with a scheme that can represent over a million characters — every language, plus emoji — with <strong>UTF-8</strong> (the encoding you'll see everywhere now) cleverly staying backward-compatible with ASCII for the first 128 values while extending outward for everything else.</p>
+
+    <h3>Images — pixels as numbers in a grid</h3>
+    <p>A digital image is a grid of pixels, and each pixel is just 3 (or 4, with transparency) byte-sized numbers — red, green, blue intensity. A 1920×1080 image is, underneath, a flat list of roughly 6 million bytes. "Compression" (JPEG, PNG) is just cleverer, smaller ways of describing that same grid — patterns and redundancy encoded more efficiently than storing every pixel's raw value.</p>
+
+    <h3>Sound — sampling a wave into numbers</h3>
+    <p>A microphone produces a continuous electrical wave. To store it digitally, the system measures (samples) that wave's height thousands of times per second — CD-quality audio takes 44,100 samples every second, each stored as a number. Play those numbers back through a speaker fast enough, in order, and your ear reconstructs something close enough to the original wave to sound continuous. This is exactly the same principle as PWM from Section 09, just running in the opposite direction — sampling analog into digital instead of approximating analog from digital.</p>
+
+    <div class="box tip"><div class="lbl">the single idea underneath this whole section</div><p>There is no separate "type" of data at the hardware level. A photo, a song, this webpage, and a running program are all, physically, just long sequences of bits sitting in memory or storage. What makes one a "photo" and another "code" is entirely about which program is interpreting those bits, and what rules it applies to them.</p></div>
+  </section>
+
+  <!-- ============ 17 OPERATING SYSTEMS ============ -->
+  <section id="s17">
+    <div class="sec-head"><div class="sec-tag amber">17</div><h2>Operating systems — Linux under the hood</h2></div>
+    <p class="sec-sub">You're running Raspberry Pi OS, which is Linux — here's what that word is actually doing for you every time you type a command.</p>
+
+    <h3 class="amber">Kernel vs userspace</h3>
+    <p>The <strong>kernel</strong> is the innermost layer of the OS — the only piece of software allowed to talk to hardware directly (memory, GPIO, disks, network cards). Everything else you run — your Python script, the terminal, <code>ls</code>, a web browser — is <strong>userspace</strong>, and has to go through the kernel (via defined "system calls") to do anything that touches real hardware. This separation exists so one crashing or misbehaving program can't take the entire machine down or reach into memory it shouldn't — the kernel enforces the boundary.</p>
+
+    <h3 class="amber">Processes and threads</h3>
+    <p>A <strong>process</strong> is a running program with its own private memory space — when you run <code>python3 main.py</code>, that's one process. A <strong>thread</strong> is a unit of execution inside a process — a process can have multiple threads running concurrently, sharing that process's memory. The kernel's <strong>scheduler</strong> is what makes a single-core Pi 2B feel like it's running many programs "at once": it rapidly switches the CPU core between processes, giving each a tiny time slice, fast enough that the switching itself is imperceptible.</p>
+
+    <h3 class="amber">The filesystem and permissions</h3>
+    <p>Linux organizes everything — including devices — as files, from a single root <code>/</code>. <code>/home/sabrine</code> is your files, <code>/etc</code> holds system configuration, <code>/dev</code> even represents hardware devices as files you can (carefully) read/write directly. Every file has an <strong>owner</strong> and <strong>permission bits</strong> (read/write/execute, for owner/group/everyone else) — this is what <code>sudo</code> is bypassing when you use it: normal commands run as your limited user account; <code>sudo</code> temporarily elevates to the <code>root</code> superuser, who can touch anything. Using it casually is how systems get broken — treat it as "I am now allowed to make an unrecoverable mistake," not as a formality.</p>
+    <pre><code>ls -l main.py
+# -rwxr-xr-x  1 sabrine sabrine  842 Jul 20 14:02 main.py
+# permissions  owner   group     size    date       name
+# r = read, w = write, x = execute — shown for owner / group / others, in that order</code></pre>
+
+    <h3 class="amber">Why Raspberry Pi OS specifically is Debian-based Linux</h3>
+    <p>"Linux" strictly refers only to the kernel — the rest (command-line tools, package manager, default software) comes from a "distribution" built around that kernel. Raspberry Pi OS is built on <strong>Debian</strong>, one of the oldest and most stable distributions, which is why its package manager is <code>apt</code> (<code>apt install</code>, <code>apt update</code>) — the same tooling you'd meet on Ubuntu, since Ubuntu is itself Debian-based. Learning <code>apt</code> here transfers directly to a huge share of the Linux world.</p>
+
+    <h3 class="amber">systemd, revisited properly</h3>
+    <p>You already used this in Section 10 to keep your script running. What it actually is: <strong>the first userspace process the kernel starts</strong> (process ID 1), responsible for starting every other service in the right order, restarting things that crash, and managing the boot sequence's final stages. It's controversial in the Linux world (some distributions deliberately avoid it in favor of simpler alternatives) precisely because it does so much — but on Raspberry Pi OS and most modern distributions, it's the standard.</p>
+  </section>
+
+  <!-- ============ 18 NETWORKING ============ -->
+  <section id="s18">
+    <div class="sec-head"><div class="sec-tag">18</div><h2>Networking — how SSH actually works</h2></div>
+    <p class="sec-sub">You've been using SSH this whole poster. Here's what's actually happening underneath <code>ssh username@ip-address</code>.</p>
+
+    <h3>IP addresses and ports</h3>
+    <p>An <strong>IP address</strong> (like <code>192.168.1.42</code>) identifies a specific device on a network — like a street address. A <strong>port</strong> is a number (0-65535) identifying which specific service on that device you want to reach — like an apartment number at that address. SSH conventionally lives on port 22; a web server on port 80/443. One device, one IP, but potentially dozens of different services simultaneously reachable at different ports.</p>
+
+    <h3>DNS and why <code>.local</code> sometimes fails</h3>
+    <p><strong>DNS</strong> translates human-readable names (<code>google.com</code>) into IP addresses. <code>raspberrypi.local</code> uses a smaller-scale cousin of this called <strong>mDNS</strong> (multicast DNS) — devices announce their own name directly on the local network instead of asking a central server. This is exactly the mechanism that can get blocked by university network isolation settings (Section 12) — another reason a raw IP address is a more reliable fallback than the <code>.local</code> hostname on a campus network.</p>
+
+    <h3>TCP — why data arrives intact</h3>
+    <p>Data crossing a network gets broken into packets, which can arrive out of order, duplicated, or not at all. <strong>TCP</strong> (Transmission Control Protocol, which SSH runs on) handles this: it numbers every packet, has the receiver acknowledge what arrived, and automatically re-sends anything missing — so the application on top never has to think about packet loss at all, it just sees a clean, ordered stream of bytes. <strong>UDP</strong> is the leaner alternative that skips all that guarantee-checking — used where speed matters more than perfection (video calls, some game traffic), since re-requesting a lost data isn't worth the delay it'd cause.</p>
+
+    <h3>What SSH actually does when you connect</h3>
+    <ol class="steps">
+      <li><span class="idx">1</span><div><b>Key exchange</b><br>Your laptop and the Pi negotiate a shared secret using public-key cryptography, without ever sending that secret itself over the network — an eavesdropper watching the traffic can't reconstruct it even having seen the whole exchange.</div></li>
+      <li><span class="idx">2</span><div><b>Encryption established</b><br>From this point, everything sent between laptop and Pi is encrypted with that shared secret — your password, your commands, your file transfers are all unreadable to anything intercepting the traffic.</div></li>
+      <li><span class="idx">3</span><div><b>Authentication</b><br>You prove who you are — either a password, or (better) an SSH key pair, where your laptop holds a private key and the Pi holds the matching public key, and you never type a password over the network at all.</div></li>
+      <li><span class="idx">4</span><div><b>A shell, remotely</b><br>Once authenticated, the Pi starts a normal shell process for you, but its input/output are piped over that encrypted connection instead of a physical keyboard/screen — which is why it feels exactly like sitting at the Pi directly.</div></li>
+    </ol>
+
+    <h3>Setting up SSH keys (worth doing properly)</h3>
+    <pre><code># On your laptop, generate a key pair once:
+ssh-keygen -t ed25519 -C "sabrine-laptop"
+
+# Copy the public key to the Pi:
+ssh-copy-id sabrine@&lt;pi-ip-address&gt;
+
+# From now on: ssh sabrine@&lt;pi-ip-address&gt;  logs in with zero password typing</code></pre>
+    <p>Beyond convenience, this is meaningfully more secure than password auth — there's no password to guess or leak, and you can later disable password login entirely on the Pi so only devices holding the matching private key can ever connect.</p>
+  </section>
+
+  <!-- ============ 19 LANGUAGES ============ -->
+  <section id="s19">
+    <div class="sec-head"><div class="sec-tag coral">19</div><h2>Languages — what "running code" means</h2></div>
+    <p class="sec-sub">You've written Python for GPIO and C for pigpio in this poster already. Here's what actually happens between you typing code and the LED turning on.</p>
+
+    <h3 class="coral">Compiled vs interpreted</h3>
+    <p>A CPU only ever executes one thing: machine code — raw binary instructions specific to its exact architecture (the Pi's is ARM). Source code you write has to become that somehow, and there are two broad strategies:</p>
+    <div class="grid2">
+      <div class="card"><div class="k">Compiled (C, C++, Rust)</div><p>A compiler translates your entire source file into machine code <strong>once</strong>, ahead of time, producing a standalone executable. Running it later means the CPU executes that machine code directly — fast, but you must recompile after every change, and the result only runs on the CPU architecture it was compiled for.</p></div>
+      <div class="card"><div class="k">Interpreted (Python, in practice)</div><p>Python source is actually first compiled to an intermediate form called <strong>bytecode</strong> (you'll see this cached as <code>.pyc</code> files), then the Python interpreter reads and executes that bytecode step by step at runtime. This adds overhead compared to running raw machine code directly — which is exactly why the timing-critical pigpio work in Section 08 reaches for a compiled C library instead of pure Python.</p></div>
+    </div>
+
+    <h3 class="coral">Why your Python GPIO calls end up touching real pins</h3>
+    <p>When you call <code>GPIO.output(17, GPIO.HIGH)</code>, that Python call doesn't touch hardware directly — it calls into a C extension (RPi.GPIO is actually written in C underneath its Python interface) which makes a system call into the kernel, which has the actual driver code allowed to write to that physical pin's memory-mapped register. Every layer here — your Python, the C extension, the kernel, the hardware register — is a real, separate boundary; "programming the GPIO" is really "asking the kernel, through several layers of translation, to flip one bit in a hardware register."</p>
+
+    <h3 class="coral">The build-and-run cycle for C, made concrete</h3>
+    <pre><code>gcc file.c -lpigpio -lrt -pthread -o out
+# ↑ this line: source code → machine code, done once
+./out
+# ↑ this line: CPU executes that machine code directly, no translation layer</code></pre>
+    <p>Compare that to Python, where <code>python3 main.py</code> both translates and runs in the same step, every single time you launch it — one more reason Python feels more immediate to iterate on, and one more reason it's slower per-instruction than compiled code.</p>
+  </section>
+
+  <!-- ============ 20 FULL STACK ============ -->
+  <section id="s20">
+    <div class="sec-head"><div class="sec-tag">20</div><h2>The full stack, tied together</h2></div>
+    <p class="sec-sub">Every section in this poster sits at one layer of the same tower. Read top to bottom and you've got the entire path from "electricity" to "your code."</p>
+
+    <div class="arch-box">
+      <table>
+        <tr><th>Layer</th><th>What lives here</th><th>Covered in</th></tr>
+        <tr><td>Physical materials</td><td>Silicon, copper, FR4, solder — the actual substances</td><td>Section 15</td></tr>
+        <tr><td>Transistors & logic gates</td><td>Voltage-controlled switches, combined into AND/OR/NOT</td><td>Section 14</td></tr>
+        <tr><td>CPU core</td><td>Fetch-decode-execute, registers, the ALU</td><td>Section 13</td></tr>
+        <tr><td>Memory & buses</td><td>RAM, storage, the wires carrying data between them</td><td>Section 14</td></tr>
+        <tr><td>Data representation</td><td>Binary, hex, how bits become text/images/sound</td><td>Section 16</td></tr>
+        <tr><td>Kernel</td><td>The only layer allowed to touch hardware directly</td><td>Section 17</td></tr>
+        <tr><td>Operating system (userspace)</td><td>Processes, filesystem, permissions, systemd</td><td>Section 17</td></tr>
+        <tr><td>Networking</td><td>IP, DNS, TCP, SSH's encryption and auth</td><td>Section 18</td></tr>
+        <tr><td>Language runtime</td><td>Compilers, interpreters, bytecode</td><td>Section 19</td></tr>
+        <tr><td>Your code</td><td><code>gpiozero</code>, <code>luma.lcd</code>, your cyberdeck's main.py</td><td>Sections 08, 07</td></tr>
+      </table>
+    </div>
+    <p>Nothing in this stack is magic once you've read the layer below it. A running LED-blink script is: your Python calling a library, calling the kernel, writing a hardware register, changing a voltage, flipping a transistor, doing exactly what Section 14 described — happening a few million times a second, reliably, because of the material properties in Section 15 and the error-correcting handshakes in Section 18 keeping every layer honest with the one above and below it.</p>
+    <div class="box tip"><div class="lbl">where to go from here</div><p>You now have, in one document, enough of a foundation to meaningfully read almost any lower-level explanation you come across — a datasheet, a kernel driver's source code, a networking RFC. The next real jump in depth from here is picking one layer and going deep: reading a real ARM instruction set reference, writing a kernel module, or building a logic-gate simulator from scratch are all natural "next" projects once this poster's foundation feels solid.</p></div>
+  </section>
+
+  <!-- ============ 21 OS LANDSCAPE ============ -->
+  <section id="s21">
+    <div class="sec-head"><div class="sec-tag amber">21</div><h2>Windows, macOS, Linux — the whole landscape</h2></div>
+    <p class="sec-sub">Every "what OS should I use" conversation, and what the guys around you actually mean when they throw these names around.</p>
+
+    <h3 class="amber">What an operating system's job actually is, stated plainly</h3>
+    <p>Strip away the branding and every OS does the same core job (Section 17 covered the mechanics): manage hardware, run programs, keep them from stepping on each other, give you a way to interact with it. Windows, macOS, and Linux differ in <em>who controls the code, who it's designed for, and what philosophy shaped its defaults</em> — not in whether they can technically do the job.</p>
+
+    <div class="grid3">
+      <div class="card"><div class="k">Windows</div><p>Made by Microsoft, closed-source, dominant on consumer/business desktops and gaming. Its history goes back to DOS; it prioritizes broad hardware/software compatibility and a consistent GUI experience. <strong>PowerShell</strong> and <strong>cmd</strong> (its terminals) exist here — see Section 22.</p></div>
+      <div class="card"><div class="k">macOS</div><p>Made by Apple, closed-source, runs only on Apple's own hardware. Under the hood it's actually Unix-based (built on a foundation called Darwin, related to BSD) — which is exactly why macOS's terminal feels much closer to Linux's than to Windows's: <code>ls</code>, <code>grep</code>, <code>ssh</code> all work natively.</p></div>
+      <div class="card"><div class="k">Linux</div><p>Not a company's product — an open-source <strong>kernel</strong> (Section 17) that anyone can use, modify, and redistribute, free of charge. This is why it "keeps getting thrown around": it isn't one OS, it's the shared foundation under an entire ecosystem of different ones.</p></div>
+    </div>
+
+    <h3 class="amber">So what is Linux, exactly, and why does everyone say it differently</h3>
+    <p>Linus Torvalds wrote the Linux kernel in 1991 and released it under a license (GPL) that lets anyone use and modify it freely, as long as they share their changes back. That single decision is why Linux is <em>everywhere</em> you don't see it: it runs most of the world's servers and cloud infrastructure, every Android phone (Android's kernel <em>is</em> Linux), most supercomputers, and your Raspberry Pi. Different groups then wrapped that same kernel with different tools, defaults, and philosophies, calling the result a <strong>distribution ("distro")</strong> — which is why "Linux" sounds like it means five different things depending on who's talking.</p>
+
+    <table>
+      <tr><th>Distro</th><th>Built for</th><th>Package manager</th></tr>
+      <tr><td>Debian</td><td>Stability above all — servers, embedded (Raspberry Pi OS is built on it)</td><td><code>apt</code></td></tr>
+      <tr><td>Ubuntu</td><td>Debian-based, more polished, most popular general-purpose distro</td><td><code>apt</code></td></tr>
+      <tr><td>Fedora</td><td>Cutting-edge features, backed by Red Hat</td><td><code>dnf</code></td></tr>
+      <tr><td>Arch</td><td>Minimal, you build it up yourself, favored by people who want full control</td><td><code>pacman</code></td></tr>
+      <tr><td>Kali</td><td>Security/penetration-testing tools pre-installed</td><td><code>apt</code> (Debian-based)</td></tr>
+    </table>
+
+    <h3 class="amber">Why this matters for how "the guys" talk</h3>
+    <p>When someone says "I run Arch" as a flex, or "just use apt" without explaining what that even is — they're usually not being intentionally obscure, they've just internalized which distro-family they live in and forgotten it needs unpacking. You now have the map: distro → which kernel-based family it belongs to → which package manager it uses. That's genuinely most of what separates "sounding fluent" from not, in casual Linux conversation.</p>
+  </section>
+
+  <!-- ============ 22 SHELLS ============ -->
+  <section id="s22">
+    <div class="sec-head"><div class="sec-tag coral">22</div><h2>Shells — Bash vs PowerShell vs cmd</h2></div>
+    <p class="sec-sub">A "shell" is just a program that reads the commands you type and asks the OS to carry them out. You've already been living inside one every time you SSH into your Pi.</p>
+
+    <div class="grid3">
+      <div class="card"><div class="k">cmd.exe</div><p>Windows's original command-line, dating back to MS-DOS conventions. Extremely limited by modern standards — barely scriptable, minimal built-in commands. Mostly kept around today for legacy compatibility; not what a working engineer chooses on Windows anymore.</p></div>
+      <div class="card"><div class="k">PowerShell</div><p>Microsoft's modern shell, first released 2006, now cross-platform (runs on Linux and macOS too). Its defining difference from every shell before it: commands pass structured <strong>objects</strong> between each other, not plain text — so <code>Get-Process | Sort-Object CPU</code> is manipulating real data fields, not parsing text output by hand. This makes it genuinely powerful for Windows system administration and automation specifically.</p></div>
+      <div class="card"><div class="k">Bash (and friends)</div><p>The default shell on almost every Linux distro and, historically, macOS (which has since switched its default to <strong>Zsh</strong>, a Bash-compatible upgrade). Everything on your Pi so far — every command in this whole poster — has been Bash. Commands pass plain text between each other, piped and filtered with tools like <code>grep</code>, <code>awk</code>, <code>sed</code>.</p></div>
+    </div>
+
+    <h3 class="coral">When each one is actually the right call</h3>
+    <table>
+      <tr><th>Situation</th><th>Reach for</th><th>Why</th></tr>
+      <tr><td>Anything on your Pi, most servers, most DevOps/cloud work</td><td>Bash</td><td>It's the universal default across Linux — the lingua franca of remote/server work</td></tr>
+      <tr><td>Automating Windows itself — user accounts, Active Directory, Windows services</td><td>PowerShell</td><td>Deep, structured integration with Windows internals that Bash on Windows can't match</td></tr>
+      <tr><td>Quick one-off Windows GUI task, nothing scripted</td><td>cmd, or just the GUI</td><td>Not worth learning PowerShell syntax for a single throwaway command</td></tr>
+      <tr><td>You're on a Mac, doing general dev work</td><td>Zsh (Bash-compatible)</td><td>It's the modern default and speaks the same dialect as your Pi/servers</td></tr>
+    </table>
+    <div class="box tip"><div class="lbl">the honest takeaway</div><p>Since your whole trajectory here is Linux/embedded/hardware, <strong>Bash is the one that actually matters most for you</strong> — and you're already fluent in its basics from every code block in this poster. PowerShell is worth knowing exists and roughly what it's for (so you're not lost if a Windows-heavy conversation happens around you), but it's not where your practical hours should go right now.</p></div>
+  </section>
+
+  <!-- ============ 23 CPU ARCHITECTURES ============ -->
+  <section id="s23">
+    <div class="sec-head"><div class="sec-tag">23</div><h2>CPU architectures — x86, ARM, and 32 vs 64-bit</h2></div>
+    <p class="sec-sub">Why your laptop and your Pi are running fundamentally different "dialects" of machine code, and what that number after "-bit" means.</p>
+
+    <h3>Instruction sets — the actual dialect difference</h3>
+    <p>Section 19 established that a CPU only executes machine code, and that machine code is architecture-specific. "Architecture" here means the <strong>instruction set</strong> — the exact vocabulary of operations a chip understands. Compiled code for one architecture is gibberish to a chip built for another; this is the real, physical reason an app compiled for your laptop can't just run on your Pi unmodified.</p>
+
+    <div class="grid2">
+      <div class="card"><div class="k">x86 (and x86-64)</div><p>Intel and AMD's architecture — what's inside almost every Windows/Linux laptop and desktop. A <strong>CISC</strong> design (Complex Instruction Set Computing): individual instructions can do fairly complex things in one step, at the cost of more complicated, power-hungrier chip internals to decode them.</p></div>
+      <div class="card"><div class="k">ARM</div><p>What your Pi runs (and every phone, and Apple Silicon Macs since 2020). A <strong>RISC</strong> design (Reduced Instruction Set Computing): individual instructions are deliberately simple, so the chip decoding them can be smaller, cheaper, and dramatically more power-efficient — which is exactly why ARM dominates anything battery-powered or thermally constrained, from phones to your Pi.</p></div>
+      <div class="card"><div class="k">RISC-V</div><p>A newer, fully open-source instruction set (unlike ARM and x86, which are licensed/proprietary) gaining serious traction in research and increasingly commercial chips — worth knowing the name, since it's the one genuinely new entrant challenging the ARM/x86 duopoly.</p></div>
+      <div class="card"><div class="k">Why Apple switching to ARM was a big deal</div><p>Apple's move from Intel (x86) to their own ARM-based chips (2020) was industry-shaking specifically because it proved RISC-style efficiency could match or beat x86 performance even outside phones — undermining the old assumption that "real" laptop/desktop power required CISC.</p></div>
+    </div>
+
+    <h3>32-bit vs 64-bit — what the number actually measures</h3>
+    <p>It refers to the width of a CPU's registers and memory addresses — how large a single number it can natively handle, and how much memory it can directly address. A 32-bit system can address at most 2^32 bytes (4GB) of memory — which is exactly why old 32-bit Windows famously couldn't "see" more than 4GB of RAM even when more was installed. 64-bit systems (essentially everything now, including current Raspberry Pi OS) address 2^64 bytes — a number so large it's not a practical ceiling for the foreseeable future.</p>
+
+    <div class="box tip"><div class="lbl">tying it back to your board</div><p>Your Pi 2B's SoC is a <strong>32-bit ARM</strong> chip (Cortex-A7) — later Pi models moved to 64-bit ARM cores. This is a real, practical constraint worth knowing: it caps addressable RAM around 4GB (moot on a 2B which only has ~1GB anyway) and means some newer 64-bit-only OS images won't run on your specific board — always check a distro explicitly supports "Pi 2" or "armhf/32-bit" before flashing it.</p></div>
+  </section>
+
+  <!-- ============ 24 THE CANON ============ -->
+  <section id="s24">
+    <div class="sec-head"><div class="sec-tag amber">24</div><h2>The engineer's canon — what's actually non-negotiable</h2></div>
+    <p class="sec-sub">Everything above builds fluency in how machines work. This is the separate list of practical skills that mark someone as operating at a working engineer's level, regardless of specialty.</p>
+
+    <h3 class="amber">Version control — git</h3>
+    <p>The single most universal tool in all of software/hardware engineering — a system for tracking every change ever made to a project's files, who made it, and why, with the ability to branch off, experiment, and merge back safely. Not knowing git is one of the fastest ways to be underestimated in a technical room; knowing it well is one of the fastest ways not to be.</p>
+    <pre><code>git init                          # start tracking a project
+git add .                         # stage changes
+git commit -m "message"           # save a snapshot with a description
+git remote add origin &lt;url&gt;       # link to a remote copy (e.g. GitHub)
+git push                          # send your commits there
+git clone &lt;url&gt;                   # copy someone else's project down</code></pre>
+
+    <h3 class="amber">Data structures & Big-O — how to reason about "fast" and "slow"</h3>
+    <p>A <strong>data structure</strong> is just an organized way of storing data (an array, a list, a tree, a hash table) — and the right choice changes how expensive an operation is, sometimes by orders of magnitude. <strong>Big-O notation</strong> is the standard shorthand for describing how an operation's cost grows as data grows: <code>O(1)</code> constant (instant, regardless of size), <code>O(n)</code> linear (cost scales directly with size), <code>O(n²)</code> quadratic (gets painful fast), <code>O(log n)</code> logarithmic (barely grows at all, the good kind). This is the actual language used when engineers discuss whether an approach "scales."</p>
+
+    <h3 class="amber">Virtualization and containers</h3>
+    <p>A <strong>virtual machine</strong> emulates an entire computer — full OS, virtual hardware — running inside another machine, isolated but heavy. A <strong>container</strong> (the concept behind Docker) is lighter: it shares the host's kernel but isolates everything else (filesystem, processes, network) — giving most of the isolation benefit of a VM at a fraction of the resource cost. This distinction is why "just Dockerize it" became a universal phrase — it's the practical, everyday tool for "make this run identically anywhere," which matters enormously once you're distributing software rather than running it on one machine you personally control.</p>
+
+    <h3 class="amber">Databases, the essential split</h3>
+    <p><strong>Relational (SQL)</strong> databases (PostgreSQL, MySQL) store data in strict tables with defined relationships between them — powerful for data with clear structure and where correctness/consistency matters most. <strong>NoSQL</strong> databases (MongoDB, Redis) trade some of that structure for flexibility and speed at scale — good for data that doesn't fit neatly into tables, or where raw throughput matters more than rigid consistency. Neither is universally "better" — it's a real trade-off engineers make per-project.</p>
+
+    <h3 class="amber">Security fundamentals</h3>
+    <p><strong>Encryption</strong> scrambles data so only someone with the right key can read it (what SSH does, Section 18). <strong>Hashing</strong> is a one-way street — it turns data into a fixed-length fingerprint that can't be reversed back to the original, used for things like storing passwords: a system should never store your actual password, only its hash, so even a full data breach doesn't hand over usable passwords. <strong>HTTPS</strong> is HTTP (the web's core protocol) wrapped in the same kind of encryption SSH uses — that padlock icon in your browser is that encryption handshake having succeeded.</p>
+
+    <div class="box tip"><div class="lbl">the real point of this section</div><p>Nobody holds all of this fluently on command — what actually separates confident engineers from everyone else in a room is knowing <em>the shape</em> of each idea well enough to ask a sharp question or follow a technical conversation, and knowing precisely which of these to go deep on for your own work. For you specifically, right now: git is worth genuine fluency immediately (you'll use it on every project from here on), and the rest are worth exactly what this section gave you — the map, so nothing said around you sounds like a foreign language.</p></div>
+  </section>
+
+  <!-- ============ 25 ARM ASSEMBLY ============ -->
+  <section id="s25">
+    <div class="sec-head"><div class="sec-tag coral">25</div><h2>ARM assembly — the layer beneath your Python</h2></div>
+    <p class="sec-sub">Section 19 said compiled code becomes machine code. Assembly is machine code's human-readable face — the lowest level anyone actually writes by hand, one step above the raw 1s and 0s themselves.</p>
+
+    <h3 class="coral">What assembly actually is</h3>
+    <p>Machine code is just numbers — an ARM instruction might literally be the bit pattern <code>1110 0001 1010 0000...</code>. Nobody writes that directly. <strong>Assembly language</strong> gives each instruction a short mnemonic name instead (<code>ADD</code>, <code>MOV</code>, <code>LDR</code>), and an <strong>assembler</strong> does the pure, direct, 1-to-1 translation from that mnemonic back into the exact bit pattern — no cleverness, no optimization, unlike a compiler translating from C or Python. This is the closest a human ever gets to speaking the CPU's actual language.</p>
+
+    <h3 class="coral">Registers — the CPU's only "hands"</h3>
+    <p>Section 14 introduced registers as the fastest, tiniest tier of memory. On ARM, there are 16 general-purpose registers, named <code>r0</code> through <code>r15</code>, each holding one 32-bit value (on your 2B's 32-bit chip). A few have reserved jobs: <code>r13</code> is the stack pointer, <code>r14</code> holds the return address after a function call, <code>r15</code> is the program counter — literally the address of the instruction currently executing. Every single operation in assembly is some variation of "move a value into a register," "do arithmetic between registers," or "read/write a register's value to memory."</p>
+
+    <h3 class="coral">A real program: adding two numbers</h3>
+    <pre><code>.global _start
+
+_start:
+    mov r0, #5          @ put the number 5 into register r0
+    mov r1, #7          @ put the number 7 into register r1
+    add r2, r0, r1      @ r2 = r0 + r1  →  r2 now holds 12
+
+    @ exit the program cleanly, using r2 as the exit code
+    mov r7, #1          @ syscall number 1 = exit
+    swi 0                @ software interrupt — hand control to the kernel</code></pre>
+    <pre><code># assemble, link, and run it on your Pi:
+as -o add.o add.s
+ld -o add add.o
+./add
+echo $?             # prints 12 — the exit code we set in r2</code></pre>
+    <p>Notice the last two instructions: <code>swi 0</code> is a <strong>software interrupt</strong> — the literal, physical mechanism a userspace program uses to hand control to the kernel (Section 17's kernel/userspace boundary, made concrete). This is what a "system call" actually *is* at the hardware level — not a metaphor, an actual instruction that exists for exactly this purpose.</p>
+
+    <h3 class="coral">Core instruction categories, the whole vocabulary in miniature</h3>
+    <table>
+      <tr><th>Category</th><th>Examples</th><th>Does</th></tr>
+      <tr><td>Data movement</td><td><code>MOV</code>, <code>LDR</code>, <code>STR</code></td><td>Move values between registers, or load/store between register and memory</td></tr>
+      <tr><td>Arithmetic</td><td><code>ADD</code>, <code>SUB</code>, <code>MUL</code></td><td>Basic math, register-to-register</td></tr>
+      <tr><td>Logic</td><td><code>AND</code>, <code>ORR</code>, <code>EOR</code></td><td>The logic gates from Section 14, as direct instructions</td></tr>
+      <tr><td>Comparison</td><td><code>CMP</code></td><td>Compares two values, sets internal flags for a following branch to check</td></tr>
+      <tr><td>Branching</td><td><code>B</code>, <code>BEQ</code>, <code>BNE</code></td><td>Jump to a different instruction — the raw material every loop and if-statement compiles down into</td></tr>
+    </table>
+
+    <h3 class="coral">Why this matters even though you'll basically never write it by hand</h3>
+    <p>You will almost certainly write Python and C for the rest of your work, not assembly — that's normal and correct, compilers do this translation far better and faster than a person should by hand for real projects. What this section actually buys you: when someone mentions "the stack overflowed," "a branch misprediction," or "this is a syscall," you now know those aren't jargon, they're literal, physical events at exactly this layer — <code>r13</code> running out of room, a <code>B</code> instruction guessing wrong about which way an <code>if</code> would go, or an <code>swi</code> instruction firing. That's the difference between memorizing terms and actually understanding the machine underneath them.</p>
+  </section>
+
+  <footer>built for the cyberdeck build · keep this open while you wire, flash, and code</footer>
+</div>
+</body>
+</html>

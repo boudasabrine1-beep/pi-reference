@@ -1,7 +1,7 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<html lang="en">
 <title>RPI // FULL STACK REFERENCE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -289,6 +289,16 @@ h3.collapsed .fold-ind{transform:rotate(-90deg);}
 .sub-body{overflow:hidden; transition:max-height .25s ease;}
 .sub-body.collapsed{max-height:0 !important;}
 
+.box.links{border-color:var(--amber);}
+.box.links .lbl{color:var(--amber);}
+.res-list{list-style:none; margin:8px 0 0; padding:0; display:flex; flex-direction:column; gap:6px;}
+.res-list li a{
+  color:var(--teal); text-decoration:none; font-size:13.5px; display:inline-flex; align-items:center; gap:6px;
+  border-bottom:1px dotted var(--border2); padding-bottom:1px;
+}
+.res-list li a::before{content:"↗"; font-size:11px; color:var(--text3);}
+.res-list li a:hover{color:var(--amber); border-bottom-color:var(--amber);}
+
 /* ---- FOOTER ---- */
 footer{
   padding:40px 0; text-align:center; color:var(--text3); font-family:'JetBrains Mono',monospace; font-size:12px;
@@ -365,6 +375,12 @@ footer{
       <li><strong>Never hot-plug GPIO wiring.</strong> Connecting/disconnecting sensors or wires to GPIO pins while the board is powered can short pins together mid-insertion. Power down first.</li>
       <li><strong>Don't just pull the power cable to turn it off</strong> — this is the same risk as the SD card issue but for the whole filesystem. Use <code>sudo shutdown -h now</code> and wait for the green activity LED to stop blinking before cutting power.</li>
     </ul>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://www.raspberrypi.com/documentation/" target="_blank" rel="noopener noreferrer">Raspberry Pi official documentation</a></li>
+<li><a href="https://learn.sparkfun.com/" target="_blank" rel="noopener noreferrer">SparkFun — free electronics tutorials hub</a></li>
+<li><a href="https://learn.adafruit.com/" target="_blank" rel="noopener noreferrer">Adafruit Learn — beginner-friendly hardware guides</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 02 ANATOMY ============ -->
@@ -391,6 +407,12 @@ footer{
       <li><strong>Kernel initializes hardware</strong> — sets up RAM, drivers, filesystems.</li>
       <li><strong>init/systemd starts userspace</strong> — the actual OS you interact with: services, networking, and eventually your login prompt or desktop.</li>
     </ol>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://www.raspberrypi.com/documentation/computers/raspberry-pi.html" target="_blank" rel="noopener noreferrer">Raspberry Pi hardware documentation</a></li>
+<li><a href="https://en.wikipedia.org/wiki/System_on_a_chip" target="_blank" rel="noopener noreferrer">System on a chip — background reading</a></li>
+<li><a href="https://www.youtube.com/c/BenEater" target="_blank" rel="noopener noreferrer">Ben Eater — YouTube, hardware & architecture explained visually</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 03 ASSEMBLY ============ -->
@@ -408,6 +430,11 @@ footer{
     </ol>
 
     <div class="box tip"><div class="lbl">for your build specifically</div><p>Since you're on a Pi 2B with a friction SD slot: image and fully verify the card works before it goes anywhere near the final enclosure, and clone a backup image immediately once it's working (Section 04 covers this). That turns "case pressed on the card, corrupted everything" from a full rebuild into a five-minute reflash.</p></div>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://projects.raspberrypi.org/en" target="_blank" rel="noopener noreferrer">Raspberry Pi Foundation — free guided projects</a></li>
+<li><a href="https://www.youtube.com/@freecodecamp" target="_blank" rel="noopener noreferrer">freeCodeCamp — full free courses, YouTube</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 04 IMAGING ============ -->
@@ -437,6 +464,11 @@ sudo dd if=~/pi-backup.img of=/dev/diskN bs=4M status=progress</code></pre>
     <pre><code>ssh username@hostname.local
 # e.g. ssh sabrine@raspberrypi.local</code></pre>
     <div class="box tip"><div class="lbl">tip</div><p>If <code>.local</code> hostname resolution doesn't work on your network, find the Pi's IP from your router's device list, or run a network scan (<code>arp -a</code>, or an app like Fing) and SSH to the IP directly.</p></div>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://www.raspberrypi.com/software/" target="_blank" rel="noopener noreferrer">Raspberry Pi Imager — official download & docs</a></li>
+<li><a href="https://www.raspberrypi.com/documentation/computers/getting-started.html" target="_blank" rel="noopener noreferrer">Raspberry Pi OS documentation</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 05 FIRST BOOT ============ -->
@@ -461,6 +493,11 @@ sudo reboot</code></pre>
 
     <h3>Set a static IP (optional, useful for headless projects)</h3>
     <p>Makes the Pi reachable at the same address every time instead of relying on DHCP + hostname resolution. Edit <code>/etc/dhcpcd.conf</code> (or use NetworkManager's <code>nmcli</code> on newer OS releases) to pin an address on your subnet.</p>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://www.raspberrypi.com/documentation/computers/configuration.html" target="_blank" rel="noopener noreferrer">raspi-config documentation</a></li>
+<li><a href="https://linuxjourney.com/" target="_blank" rel="noopener noreferrer">Linux Journey — free interactive Linux course</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 06 GPIO PINOUT ============ -->
@@ -551,6 +588,11 @@ sudo reboot</code></pre>
       <tr><td>WiringPi</td><td>A legacy third numbering, mostly historical now</td><td>Older C examples — largely deprecated, avoid for new projects</td></tr>
     </table>
     <p>When you see "GPIO17" in a tutorial, that's the BCM number — cross-reference against the diagram above to find its physical pin (11) if you're wiring by hand.</p>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://pinout.xyz/" target="_blank" rel="noopener noreferrer">pinout.xyz — interactive Raspberry Pi GPIO reference</a></li>
+<li><a href="https://gpiozero.readthedocs.io/" target="_blank" rel="noopener noreferrer">gpiozero official documentation</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 07 SCREEN ============ -->
@@ -586,6 +628,11 @@ with device:
 
 draw_img = device.display  # or build a PIL Image and call device.display(image)</code></pre>
     <p>Libraries like <code>luma.lcd</code> and Adafruit's CircuitPython display drivers both hand you a PIL (Python Imaging Library) canvas — meaning once the screen is talking, you draw to it with normal image/text drawing calls, same as you would to any image file.</p>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://learn.adafruit.com/" target="_blank" rel="noopener noreferrer">Adafruit — SPI/TFT display guides</a></li>
+<li><a href="https://learn.pimoroni.com/" target="_blank" rel="noopener noreferrer">Pimoroni Learn — display & HAT tutorials</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 08 PROGRAMMING GPIO ============ -->
@@ -660,6 +707,12 @@ setTimeout(() => { led.writeSync(0); led.unexport(); }, 1000);</code></pre>
     </table>
 
     <div class="box tip"><div class="lbl">always</div><p>Release pins cleanly on exit (<code>GPIO.cleanup()</code>, <code>led.unexport()</code>, etc). Skipping this leaves pins in whatever state they were left, which can confuse the next run of your script or another program trying to use the same pin.</p></div>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://gpiozero.readthedocs.io/" target="_blank" rel="noopener noreferrer">gpiozero documentation</a></li>
+<li><a href="https://pypi.org/project/RPi.GPIO/" target="_blank" rel="noopener noreferrer">RPi.GPIO on PyPI — docs & source</a></li>
+<li><a href="https://abyz.me.uk/rpi/pigpio/" target="_blank" rel="noopener noreferrer">pigpio library documentation</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 09 PROTOCOLS ============ -->
@@ -703,6 +756,11 @@ for cycle in range(3):
 
     <h3 class="coral">Choosing which protocol a component needs</h3>
     <p>You don't choose this — the component's datasheet does. Check what the part actually exposes: if it lists "SDA/SCL" it's I2C, "MOSI/MISO/SCK/CS" it's SPI, "TX/RX" it's UART. Match your wiring and code library to what's printed on the datasheet, not the other way around.</p>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://learn.sparkfun.com/tutorials/i2c" target="_blank" rel="noopener noreferrer">SparkFun — I2C explained</a></li>
+<li><a href="https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi" target="_blank" rel="noopener noreferrer">SparkFun — SPI explained</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 10 SOFTWARE STACK ============ -->
@@ -752,6 +810,11 @@ journalctl -u mydeck.service -f        # live log output</code></pre>
       <tr><td>Samba / SFTP</td><td>Transferring files back and forth between laptop and Pi</td></tr>
       <tr><td>Syncthing / rsync</td><td>Keeping a project folder in sync between laptop and Pi during development</td></tr>
     </table>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://www.freedesktop.org/wiki/Software/systemd/" target="_blank" rel="noopener noreferrer">systemd official documentation</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials" target="_blank" rel="noopener noreferrer">DigitalOcean community tutorials — Linux server admin</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 11 TROUBLESHOOTING ============ -->
@@ -772,6 +835,11 @@ journalctl -u mydeck.service -f        # live log output</code></pre>
     </table>
 
     <div class="box tip"><div class="lbl">general debugging habit</div><p><code>dmesg</code> and <code>journalctl -xe</code> show the kernel and system logs — almost every hardware-level problem (bad SD card, power brownouts, USB device issues) leaves a trace there even when nothing appears on screen.</p></div>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://www.raspberrypi.com/documentation/" target="_blank" rel="noopener noreferrer">Raspberry Pi official documentation</a></li>
+<li><a href="https://forums.raspberrypi.com/" target="_blank" rel="noopener noreferrer">Raspberry Pi official forums</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 12 YOUR SETUP ============ -->
@@ -815,6 +883,11 @@ journalctl -u mydeck.service -f        # live log output</code></pre>
       <li><span class="idx">4</span><div><b>SSH in from your laptop</b><br><code>ssh username@&lt;ip-address&gt;</code> — from here on, the screen can come off and the Pi lives inside its case.</div></li>
       <li><span class="idx">5</span><div><b>Write and edit code on your laptop</b><br>Either edit directly over SSH (<code>nano</code>/<code>vim</code> on the Pi), or edit locally and sync files over with <code>scp</code>/<code>rsync</code>, or use VS Code's "Remote - SSH" extension to edit Pi files with a full local-feeling editor.</div></li>
     </ol>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://eduroam.org/" target="_blank" rel="noopener noreferrer">eduroam — official site</a></li>
+<li><a href="https://wiki.archlinux.org/title/Network_configuration" target="_blank" rel="noopener noreferrer">Arch Wiki — network configuration (excellent, distro-agnostic)</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 13 THE CORE VISUAL ============ -->
@@ -883,6 +956,11 @@ journalctl -u mydeck.service -f        # live log output</code></pre>
       <li><span class="idx">3</span><div><b>Execute</b><br>The relevant circuitry actually does it — adds two numbers, moves data, changes what happens next — and the result lands somewhere (a register, memory, or an output pin), then the loop repeats.</div></li>
     </ol>
     <p>The "glow" in the diagram above is a real physical thing, not just an animation choice: it's literally current moving through billions of transistors, each one flicking on and off in that fetch-decode-execute rhythm, at a rate set by the chip's clock — on a Pi 2B, 900 million times a second.</p>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://www.youtube.com/c/BenEater" target="_blank" rel="noopener noreferrer">Ben Eater — build an 8-bit computer, YouTube series</a></li>
+<li><a href="https://eater.net/8bit" target="_blank" rel="noopener noreferrer">eater.net/8bit — the same project, written up in full</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 14 COMPUTER ENGINEERING FOUNDATIONS ============ -->
@@ -925,6 +1003,11 @@ journalctl -u mydeck.service -f        # live log output</code></pre>
 
     <h3 class="amber">Von Neumann architecture — the shape almost every computer follows</h3>
     <p>Named after mathematician John von Neumann, this is the architectural pattern your Pi (and your laptop, and almost everything with "computer" in the name) uses: <strong>a single memory space holds both the program's instructions and its data</strong>, and the CPU fetches from that same memory to figure out both what to do and what to do it to. The alternative (Harvard architecture — separate memory for instructions vs data) shows up mostly in small embedded microcontrollers where speed and simplicity matter more than flexibility.</p>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://www.nand2tetris.org/" target="_blank" rel="noopener noreferrer">nand2tetris.org — free course, build a computer from NAND gates up</a></li>
+<li><a href="https://cs50.harvard.edu/x/" target="_blank" rel="noopener noreferrer">CS50 — Harvard's free intro to computer science</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 15 MATERIALS ============ -->
@@ -972,6 +1055,11 @@ journalctl -u mydeck.service -f        # live log output</code></pre>
     </div>
 
     <div class="box tip"><div class="lbl">the pattern underneath all of these</div><p>Almost every material choice on this board follows the same logic: <strong>use the cheapest material that clears the bar for a given job, and reserve expensive, high-performance materials only for the specific spots where their extra property (corrosion resistance, thermal conductivity, heat tolerance) is actually load-bearing.</strong> Recognizing that pattern is most of what "engineering intuition" for material selection actually is.</p></div>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://www.allaboutcircuits.com/" target="_blank" rel="noopener noreferrer">All About Circuits — free electronics reference</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Printed_circuit_board" target="_blank" rel="noopener noreferrer">Printed circuit board — background reading</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 16 NUMBERS & DATA ============ -->
@@ -999,6 +1087,11 @@ journalctl -u mydeck.service -f        # live log output</code></pre>
     <p>A microphone produces a continuous electrical wave. To store it digitally, the system measures (samples) that wave's height thousands of times per second — CD-quality audio takes 44,100 samples every second, each stored as a number. Play those numbers back through a speaker fast enough, in order, and your ear reconstructs something close enough to the original wave to sound continuous. This is exactly the same principle as PWM from Section 09, just running in the opposite direction — sampling analog into digital instead of approximating analog from digital.</p>
 
     <div class="box tip"><div class="lbl">the single idea underneath this whole section</div><p>There is no separate "type" of data at the hardware level. A photo, a song, this webpage, and a running program are all, physically, just long sequences of bits sitting in memory or storage. What makes one a "photo" and another "code" is entirely about which program is interpreting those bits, and what rules it applies to them.</p></div>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://www.khanacademy.org/computing/computer-science" target="_blank" rel="noopener noreferrer">Khan Academy — computer science, free</a></li>
+<li><a href="https://www.nand2tetris.org/" target="_blank" rel="noopener noreferrer">nand2tetris.org</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 17 OPERATING SYSTEMS ============ -->
@@ -1024,6 +1117,11 @@ journalctl -u mydeck.service -f        # live log output</code></pre>
 
     <h3 class="amber">systemd, revisited properly</h3>
     <p>You already used this in Section 10 to keep your script running. What it actually is: <strong>the first userspace process the kernel starts</strong> (process ID 1), responsible for starting every other service in the right order, restarting things that crash, and managing the boot sequence's final stages. It's controversial in the Linux world (some distributions deliberately avoid it in favor of simpler alternatives) precisely because it does so much — but on Raspberry Pi OS and most modern distributions, it's the standard.</p>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://linuxjourney.com/" target="_blank" rel="noopener noreferrer">Linux Journey — free, interactive, beginner to advanced</a></li>
+<li><a href="https://www.youtube.com/@freecodecamp" target="_blank" rel="noopener noreferrer">freeCodeCamp — full Linux courses, YouTube</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 18 NETWORKING ============ -->
@@ -1057,6 +1155,11 @@ ssh-copy-id sabrine@&lt;pi-ip-address&gt;
 
 # From now on: ssh sabrine@&lt;pi-ip-address&gt;  logs in with zero password typing</code></pre>
     <p>Beyond convenience, this is meaningfully more secure than password auth — there's no password to guess or leak, and you can later disable password login entirely on the Pi so only devices holding the matching private key can ever connect.</p>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://www.youtube.com/c/BenEater" target="_blank" rel="noopener noreferrer">Ben Eater — how the internet works, YouTube series</a></li>
+<li><a href="https://eater.net/" target="_blank" rel="noopener noreferrer">eater.net — the written companion site</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 19 LANGUAGES ============ -->
@@ -1080,6 +1183,11 @@ ssh-copy-id sabrine@&lt;pi-ip-address&gt;
 ./out
 # ↑ this line: CPU executes that machine code directly, no translation layer</code></pre>
     <p>Compare that to Python, where <code>python3 main.py</code> both translates and runs in the same step, every single time you launch it — one more reason Python feels more immediate to iterate on, and one more reason it's slower per-instruction than compiled code.</p>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://docs.python.org/3/" target="_blank" rel="noopener noreferrer">Official Python documentation</a></li>
+<li><a href="https://www.youtube.com/@freecodecamp" target="_blank" rel="noopener noreferrer">freeCodeCamp — programming language courses, YouTube</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 20 FULL STACK ============ -->
@@ -1104,6 +1212,11 @@ ssh-copy-id sabrine@&lt;pi-ip-address&gt;
     </div>
     <p>Nothing in this stack is magic once you've read the layer below it. A running LED-blink script is: your Python calling a library, calling the kernel, writing a hardware register, changing a voltage, flipping a transistor, doing exactly what Section 14 described — happening a few million times a second, reliably, because of the material properties in Section 15 and the error-correcting handshakes in Section 18 keeping every layer honest with the one above and below it.</p>
     <div class="box tip"><div class="lbl">where to go from here</div><p>You now have, in one document, enough of a foundation to meaningfully read almost any lower-level explanation you come across — a datasheet, a kernel driver's source code, a networking RFC. The next real jump in depth from here is picking one layer and going deep: reading a real ARM instruction set reference, writing a kernel module, or building a logic-gate simulator from scratch are all natural "next" projects once this poster's foundation feels solid.</p></div>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://teachyourselfcs.com/" target="_blank" rel="noopener noreferrer">teachyourselfcs.com — a free, curated CS curriculum</a></li>
+<li><a href="https://www.nand2tetris.org/" target="_blank" rel="noopener noreferrer">nand2tetris.org</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 21 OS LANDSCAPE ============ -->
@@ -1134,6 +1247,11 @@ ssh-copy-id sabrine@&lt;pi-ip-address&gt;
 
     <h3 class="amber">Why this matters for how "the guys" talk</h3>
     <p>When someone says "I run Arch" as a flex, or "just use apt" without explaining what that even is — they're usually not being intentionally obscure, they've just internalized which distro-family they live in and forgotten it needs unpacking. You now have the map: distro → which kernel-based family it belongs to → which package manager it uses. That's genuinely most of what separates "sounding fluent" from not, in casual Linux conversation.</p>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://distrowatch.com/" target="_blank" rel="noopener noreferrer">DistroWatch — compare every Linux distro that exists</a></li>
+<li><a href="https://linuxjourney.com/" target="_blank" rel="noopener noreferrer">Linux Journey</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 22 SHELLS ============ -->
@@ -1156,6 +1274,11 @@ ssh-copy-id sabrine@&lt;pi-ip-address&gt;
       <tr><td>You're on a Mac, doing general dev work</td><td>Zsh (Bash-compatible)</td><td>It's the modern default and speaks the same dialect as your Pi/servers</td></tr>
     </table>
     <div class="box tip"><div class="lbl">the honest takeaway</div><p>Since your whole trajectory here is Linux/embedded/hardware, <strong>Bash is the one that actually matters most for you</strong> — and you're already fluent in its basics from every code block in this poster. PowerShell is worth knowing exists and roughly what it's for (so you're not lost if a Windows-heavy conversation happens around you), but it's not where your practical hours should go right now.</p></div>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://learn.microsoft.com/powershell/" target="_blank" rel="noopener noreferrer">Official Microsoft PowerShell documentation</a></li>
+<li><a href="https://www.gnu.org/software/bash/manual/" target="_blank" rel="noopener noreferrer">GNU Bash manual — official</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 23 CPU ARCHITECTURES ============ -->
@@ -1177,6 +1300,11 @@ ssh-copy-id sabrine@&lt;pi-ip-address&gt;
     <p>It refers to the width of a CPU's registers and memory addresses — how large a single number it can natively handle, and how much memory it can directly address. A 32-bit system can address at most 2^32 bytes (4GB) of memory — which is exactly why old 32-bit Windows famously couldn't "see" more than 4GB of RAM even when more was installed. 64-bit systems (essentially everything now, including current Raspberry Pi OS) address 2^64 bytes — a number so large it's not a practical ceiling for the foreseeable future.</p>
 
     <div class="box tip"><div class="lbl">tying it back to your board</div><p>Your Pi 2B's SoC is a <strong>32-bit ARM</strong> chip (Cortex-A7) — later Pi models moved to 64-bit ARM cores. This is a real, practical constraint worth knowing: it caps addressable RAM around 4GB (moot on a 2B which only has ~1GB anyway) and means some newer 64-bit-only OS images won't run on your specific board — always check a distro explicitly supports "Pi 2" or "armhf/32-bit" before flashing it.</p></div>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://www.youtube.com/c/BenEater" target="_blank" rel="noopener noreferrer">Ben Eater — building a 6502-based computer, YouTube</a></li>
+<li><a href="https://developer.arm.com/documentation" target="_blank" rel="noopener noreferrer">Arm official developer documentation</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 24 THE CANON ============ -->
@@ -1206,6 +1334,12 @@ git clone &lt;url&gt;                   # copy someone else's project down</code
     <p><strong>Encryption</strong> scrambles data so only someone with the right key can read it (what SSH does, Section 18). <strong>Hashing</strong> is a one-way street — it turns data into a fixed-length fingerprint that can't be reversed back to the original, used for things like storing passwords: a system should never store your actual password, only its hash, so even a full data breach doesn't hand over usable passwords. <strong>HTTPS</strong> is HTTP (the web's core protocol) wrapped in the same kind of encryption SSH uses — that padlock icon in your browser is that encryption handshake having succeeded.</p>
 
     <div class="box tip"><div class="lbl">the real point of this section</div><p>Nobody holds all of this fluently on command — what actually separates confident engineers from everyone else in a room is knowing <em>the shape</em> of each idea well enough to ask a sharp question or follow a technical conversation, and knowing precisely which of these to go deep on for your own work. For you specifically, right now: git is worth genuine fluency immediately (you'll use it on every project from here on), and the rest are worth exactly what this section gave you — the map, so nothing said around you sounds like a foreign language.</p></div>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://git-scm.com/book/en/v2" target="_blank" rel="noopener noreferrer">Pro Git — the entire book, free</a></li>
+<li><a href="https://docs.docker.com/get-started/" target="_blank" rel="noopener noreferrer">Docker — official getting-started guide</a></li>
+<li><a href="https://teachyourselfcs.com/" target="_blank" rel="noopener noreferrer">teachyourselfcs.com</a></li>
+    </ul></div>
+
   </section>
 
   <!-- ============ 25 ARM ASSEMBLY ============ -->
@@ -1249,6 +1383,11 @@ echo $?             # prints 12 — the exit code we set in r2</code></pre>
 
     <h3 class="coral">Why this matters even though you'll basically never write it by hand</h3>
     <p>You will almost certainly write Python and C for the rest of your work, not assembly — that's normal and correct, compilers do this translation far better and faster than a person should by hand for real projects. What this section actually buys you: when someone mentions "the stack overflowed," "a branch misprediction," or "this is a syscall," you now know those aren't jargon, they're literal, physical events at exactly this layer — <code>r13</code> running out of room, a <code>B</code> instruction guessing wrong about which way an <code>if</code> would go, or an <code>swi</code> instruction firing. That's the difference between memorizing terms and actually understanding the machine underneath them.</p>
+    <div class="box links"><div class="lbl">go deeper — free resources</div><ul class="res-list">
+<li><a href="https://developer.arm.com/documentation" target="_blank" rel="noopener noreferrer">Arm official developer documentation</a></li>
+<li><a href="https://www.youtube.com/c/BenEater" target="_blank" rel="noopener noreferrer">Ben Eater — 6502 assembly programming, YouTube</a></li>
+    </ul></div>
+
   </section>
 
   <footer>built for the cyberdeck build · keep this open while you wire, flash, and code</footer>
